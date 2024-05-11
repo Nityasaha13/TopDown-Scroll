@@ -10,40 +10,42 @@ Author URI:        https://codesocials.com/nitya-gopal-saha/
 
 
 register_activation_hook(__FILE__, 'td_scroll_activate');
-function td_scroll_activate()
-{
+function td_scroll_activate() {
+    // Create transient data for activation notice
+    set_transient('td-scroll-activation-notice', true, 5);
 }
 
 register_deactivation_hook(__FILE__, 'td_scroll_deactivate');
 function td_scroll_deactivate()
 {
+    
 }
 
-// Function to display activation notice
-function td_scroll_plugin_activation_notice() {
-    ?>
-    <div class="notice notice-success is-dismissible">
-        <p><?php esc_html_e( 'Add scroll buttons from settings. Goto Appearance>Top-Down Scroll.', 'plugin-text-domain' ); ?></p>
-    </div>
-    <?php
-}
-// add_action('admin_notices', 'td_scroll_plugin_activation_notice');
+// Add admin notice
+add_action('admin_notices', 'td_scroll_activate_admin_notice');
 
-// Function to display deactivation notice
-function td_scroll_plugin_deactivation_notice() {
-    ?>
-    <div class="notice notice-warning is-dismissible">
-        <p><?php esc_html_e( 'The Top-Down Scroll is deactivated.', 'plugin-text-domain' ); ?></p>
-    </div>
-    <?php
+/**
+ * Admin Notice on Activation.
+ */
+function td_scroll_activate_admin_notice() {
+    // Check transient, if available display notice
+    if (get_transient('td-scroll-activation-notice')) {
+        ?>
+        <div class="updated notice is-dismissible">
+            <p><?php esc_html_e('Add scroll buttons from settings. Goto Appearance>Top-Down Scroll.', 'plugin-text-domain'); ?></p>
+        </div>
+        <?php
+        // Delete transient, only display this notice once
+        delete_transient('td-scroll-activation-notice');
+    }
 }
-// add_action('admin_notices', 'td_scroll_plugin_deactivation_notice');
 
 
 $plugin_url = plugins_url();
 wp_localize_script('top-down-script', 'pluginData', array(
     'pluginUrl' => esc_url( plugins_url('/', __FILE__) )
 ));
+
 
 // Enqueue style and scripts in plugin admin pages
 add_action('admin_enqueue_scripts', 'td_scroll_admin_enqueue_scripts');
@@ -54,7 +56,6 @@ function td_scroll_admin_enqueue_scripts()
 }
 
 
-
 // Enqueue scripts and styles in frontend
 add_action('wp_enqueue_scripts', 'td_scroll_enqueue_scripts');
 function td_scroll_enqueue_scripts()
@@ -62,6 +63,7 @@ function td_scroll_enqueue_scripts()
     wp_enqueue_style('top-down-css', plugins_url('/assets/css/top-down.css', __FILE__));
     wp_enqueue_script('top-down-js', plugins_url('/assets/js/top-down.js', __FILE__), array('jquery'), null, true);
 }
+
 
 //Scroll to top button
 function td_scroll_to_top_button(){
