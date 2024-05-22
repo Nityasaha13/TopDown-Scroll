@@ -1,5 +1,5 @@
 .td-top-btn, .td-down-btn {
-  display: none; /* Initially hide the buttons */
+  display: none;
 }
 
 /* Common styles for the buttons */
@@ -10,7 +10,7 @@
   border: 1px solid rgb(184, 181, 181);
   cursor: pointer;
   border-radius: 50%;
-  z-index: 9999; /* Ensure it's on top of other elements */
+  z-index: 9999;
 }
 
 .td-top-btn:focus, .td-down-btn:focus {
