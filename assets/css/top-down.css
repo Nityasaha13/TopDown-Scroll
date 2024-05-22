@@ -1,33 +1,40 @@
-.td-top-btn img, .td-down-btn img{
+/* Common styles for the buttons */
+.td-top-btn, .td-down-btn {
+  position: fixed;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid rgb(184, 181, 181);
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 9999; /* Ensure it's on top of other elements */
+}
+
+.td-top-btn:focus, .td-down-btn:focus {
+  background-color: white;
+  border: 1px solid rgb(184, 181, 181);
+}
+
+.td-top-btn:hover, .td-down-btn:hover {
+  background-color: white;
+  border: 1px solid rgb(184, 181, 181);
+}
+
+.td-top-btn img, .td-down-btn img {
   width: 30px;
 }
 
-#td-scroll-to-down {
-  position: fixed;
-  bottom: 20px; /* Adjust the distance from the bottom as needed */
-  padding: 10px;
-  background-color: white;
-  border: 1px solid rgb(184, 181, 181);
-  cursor: pointer;
-  border-radius: 50%;
-  z-index: 9999; /* Ensure it's on top of other elements */
+.td-top-btn {
+  bottom: 75px;
 }
 
-#td-scroll-to-top{
-  position: fixed;
-  bottom: 75px; /* Adjust the distance from the bottom as needed */
-  padding: 10px;
-  background-color: white;
-  border: 1px solid rgb(184, 181, 181);
-  cursor: pointer;
-  border-radius: 50%;
-  z-index: 9999; /* Ensure it's on top of other elements */
+.td-down-btn {
+  bottom: 20px;
 }
 
-#td-scroll-to-top {
-    left: 20px; /* Adjust the distance from the left as needed */
+.td-position-left {
+  left: 20px; 
 }
 
-#td-scroll-to-down {
-    left: 20px; /* Adjust the distance from the right as needed */
+.td-position-right {
+  right: 20px; 
 }

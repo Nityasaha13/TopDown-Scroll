@@ -4,5 +4,9 @@ td.td-table-data,th.td-table-heading {
 }
 
 p.submit {
-    margin: 10px;
+    margin: 10px; 
+}
+
+td.td-table-data label {
+    margin-right: 20px;
 }
