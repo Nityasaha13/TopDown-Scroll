@@ -63,15 +63,17 @@ function td_scroll_enqueue_scripts()
 {
     wp_enqueue_style('top-down-css', plugins_url('/assets/css/top-down.css', __FILE__));
     wp_enqueue_script('top-down-js', plugins_url('/assets/js/top-down.js', __FILE__), array('jquery'), null, true);
+    wp_enqueue_script('scroll-buttons', plugins_url('/assets/js/button-behaviour.js', __FILE__), array('jquery'), null, true);
 }
 
 
-//Scroll to top button
+// Scroll to top button
 function td_scroll_to_top_button() {
     $position = get_option('td_position', 'left'); // Default to 'left' if not set
+    $bottom_position = get_option('enable_down') === 'on' ? '75px' : '20px';
     ?>
 
-    <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>">
+    <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>" style="bottom: <?php echo esc_attr($bottom_position); ?>;">
         <img src="<?php echo esc_url(plugins_url('/assets/images/up2.svg', __FILE__)); ?>" alt="top">
     </button>
 

@@ -1,3 +1,7 @@
+.td-top-btn, .td-down-btn {
+  display: none; /* Initially hide the buttons */
+}
+
 /* Common styles for the buttons */
 .td-top-btn, .td-down-btn {
   position: fixed;
@@ -23,9 +27,9 @@
   width: 30px;
 }
 
-.td-top-btn {
+/* .td-top-btn {
   bottom: 75px;
-}
+} */
 
 .td-down-btn {
   bottom: 20px;
