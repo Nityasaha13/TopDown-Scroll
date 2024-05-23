@@ -3,7 +3,7 @@
 Plugin Name: Top-Down Scroll
 Plugin URI:        https://codesocials.com/top-down-scroll/
 Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
-Version: 1.1
+Version: 1.2
 Author: Nitya Saha
 Author URI:        https://codesocials.com/nitya-gopal-saha/
 */
