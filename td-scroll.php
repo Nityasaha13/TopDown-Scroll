@@ -80,7 +80,7 @@ function td_scroll_to_top_button() {
     <?php
 }
 
-//Scroll to down button
+//Scroll to down button 
 function td_scroll_to_down_button() {
     $position = get_option('td_position', 'left'); // Default to 'left' if not set
     ?>

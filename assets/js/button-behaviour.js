@@ -9,14 +9,14 @@ jQuery(document).ready(function($) {
         var scrollPercent = (scrollTop / (documentHeight - windowHeight)) * 100;
 
         // Show the top button if scrolled more than 10%
-        if (scrollPercent > 15) {
+        if ($topButton.length && scrollPercent > 10) {
             $topButton.show();
         } else {
             $topButton.hide();
         }
 
         // Show the down button if not within bottom 10%
-        if (scrollPercent < 85) {
+        if ($downButton.length && scrollPercent < 90) {
             $downButton.show();
         } else {
             $downButton.hide();
