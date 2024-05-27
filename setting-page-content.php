@@ -44,24 +44,26 @@ function top_down_scroll_page_content() {
                     <th scope="row" class="td-table-heading">Upload Top Button Icon:</th>
                     <td class="td-table-data">
                         <input type="hidden" name="top_button_icon_url" id="top_button_icon_url" value="<?php echo esc_attr(get_option('top_button_icon_url')); ?>">
-                        <button type="button" class="button" id="upload_top_button_icon">Upload/Select Icon</button>
+                        <button type="button" class="button rudr-upload" id="upload_top_button_icon">Select Up Icon</button>
                         <div id="top_button_icon_preview" style="margin-top: 10px;">
                             <?php if ($top_icon_url = get_option('top_button_icon_url')) : ?>
                                 <img src="<?php echo esc_url($top_icon_url); ?>" alt="Top Button Icon" style="width: 30px; height: 30px;">
                             <?php endif; ?>
                         </div>
+                        <a href="#" class="rudr-remove" id="remove_top_button_icon" style="<?php echo get_option('top_button_icon_url') ? '' : 'display:none'; ?>">Remove Icon</a>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="td-table-heading">Upload Down Button Icon:</th>
                     <td class="td-table-data">
                         <input type="hidden" name="down_button_icon_url" id="down_button_icon_url" value="<?php echo esc_attr(get_option('down_button_icon_url')); ?>">
-                        <button type="button" class="button" id="upload_down_button_icon">Upload/Select Icon</button>
+                        <button type="button" class="button rudr-upload" id="upload_down_button_icon">Select Down Icon</button>
                         <div id="down_button_icon_preview" style="margin-top: 10px;">
                             <?php if ($down_icon_url = get_option('down_button_icon_url')) : ?>
                                 <img src="<?php echo esc_url($down_icon_url); ?>" alt="Down Button Icon" style="width: 30px; height: 30px;">
                             <?php endif; ?>
                         </div>
+                        <a href="#" class="rudr-remove" id="remove_down_button_icon" style="<?php echo get_option('down_button_icon_url') ? '' : 'display:none'; ?>">Remove Icon</a>
                     </td>
                 </tr>
             </table>

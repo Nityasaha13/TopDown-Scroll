@@ -8,17 +8,6 @@ Author: Nitya Saha
 Author URI:        https://codesocials.com/nitya-gopal-saha/
 */
 
-if ( ! function_exists( 'wp_handle_upload' ) ) {
-    require_once( ABSPATH . 'wp-admin/includes/file.php' );
-}
-if ( ! function_exists( 'media_handle_upload' ) ) {
-    require_once( ABSPATH . 'wp-admin/includes/media.php' );
-}
-if ( ! function_exists( 'wp_get_attachment_url' ) ) {
-    require_once( ABSPATH . 'wp-includes/post.php' );
-}
-
-
 require_once("dashboard-settings.php");
 require_once("setting-page-content.php");
 
@@ -53,19 +42,12 @@ function td_scroll_activate_admin_notice() {
     }
 }
 
-
-$plugin_url = plugins_url();
-wp_localize_script('top-down-script', 'pluginData', array(
-    'pluginUrl' => esc_url( plugins_url('/', __FILE__) )
-));
-
-
 // Enqueue style and scripts in plugin admin pages
 add_action('admin_enqueue_scripts', 'td_scroll_admin_enqueue_scripts');
 function td_scroll_admin_enqueue_scripts()
 {
     wp_enqueue_style('top-down-admin-css', esc_url( plugins_url('/assets/css/td-dashboard.css', __FILE__) ));
-    // wp_enqueue_script('top-down-admin-js', esc_url( plugins_url('/assets/js/td-script.js', __FILE__) ), array('jquery'), null, true);
+    wp_enqueue_script('td-media-uploader-js', esc_url( plugins_url('/assets/js/media-uploader.js', __FILE__) ), array('jquery'), null, true);
 }
 
 
@@ -96,29 +78,35 @@ function td_scroll_theme_page() {
 add_action('admin_menu', 'td_scroll_theme_page');
 
 
+// Function to display scroll-to-top button
 function td_scroll_to_top_button() {
     $position = get_option('td_position', 'left'); // Default to 'left' if not set
     $bottom_position = get_option('enable_down') === 'on' ? '75px' : '20px';
     $top_icon_url = get_option('top_button_icon_url') ? get_option('top_button_icon_url') : plugins_url('/assets/images/up2.svg', __FILE__);
     ?>
-
     <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>" style="bottom: <?php echo esc_attr($bottom_position); ?>;">
         <img src="<?php echo esc_url($top_icon_url); ?>" alt="top">
     </button>
-
     <?php
 }
 
+
+// Function to display scroll-to-down button
 function td_scroll_to_down_button() {
     $position = get_option('td_position', 'left'); // Default to 'left' if not set
     $down_icon_url = get_option('down_button_icon_url') ? get_option('down_button_icon_url') : plugins_url('/assets/images/down2.svg', __FILE__);
     ?>
-
     <button id="td-scroll-to-down" class="td-down-btn td-position-<?php echo esc_attr($position); ?>">
         <img src="<?php echo esc_url($down_icon_url); ?>" alt="down">
     </button>
-
     <?php
 }
+
+
+// UPLOAD ENGINE
+function load_wp_media_files() {
+    wp_enqueue_media();
+}
+add_action( 'admin_enqueue_scripts', 'load_wp_media_files' );
 
 

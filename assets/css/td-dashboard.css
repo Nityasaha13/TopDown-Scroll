@@ -10,3 +10,7 @@ p.submit {
 td.td-table-data label {
     margin-right: 20px;
 }
+
+tr {
+    border-bottom: 1px solid #c4c4c4;
+}
