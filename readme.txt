@@ -3,7 +3,7 @@ Contributors: nityasaha
 Tags: scroll to top, scroll to bottom, back to top, smooth scroll, top down scroll
 Requires at least: 4.0
 Tested up to: 5.9
-Stable tag: 1.2
+Stable tag: 1.25
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,10 +49,10 @@ Yes, you can enable or disable each button separately from the plugin settings p
 
 == Changelog ==
 
-= 1.12 =
+= 1.1 =
 * Initial release
 
 == Upgrade Notice ==
 
-= 1.12 =
+= 1.1 =
 This is the initial release of the plugin.

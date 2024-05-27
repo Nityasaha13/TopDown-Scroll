@@ -1,12 +1,15 @@
 <?php
 /*
 Plugin Name: Top-Down Scroll
-Plugin URI:        https://codesocials.com/top-down-scroll/
+Plugin URI: https://codesocials.com/top-down-scroll/
 Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
-Version: 1.2
+Version: 1.25
 Author: Nitya Saha
-Author URI:        https://codesocials.com/nitya-gopal-saha/
+Author URI: https://codesocials.com/nitya-gopal-saha/
 */
+
+// Define plugin version
+define('TD_SCROLL_PLUGIN_VERSION', '1.25');
 
 require_once("dashboard-settings.php");
 require_once("setting-page-content.php");
@@ -44,25 +47,22 @@ function td_scroll_activate_admin_notice() {
 
 // Enqueue style and scripts in plugin admin pages
 add_action('admin_enqueue_scripts', 'td_scroll_admin_enqueue_scripts');
-function td_scroll_admin_enqueue_scripts()
-{
-    wp_enqueue_style('top-down-admin-css', esc_url( plugins_url('/assets/css/td-dashboard.css', __FILE__) ));
-    wp_enqueue_script('td-media-uploader-js', esc_url( plugins_url('/assets/js/media-uploader.js', __FILE__) ), array('jquery'), null, true);
+function td_scroll_admin_enqueue_scripts($hook) {
+    if ($hook != 'appearance_page_top-down-scroll-page') {
+        return;
+    }
+    wp_enqueue_style('top-down-admin-css', plugins_url('/assets/css/td-dashboard.css', __FILE__), array(), TD_SCROLL_PLUGIN_VERSION);
+    wp_enqueue_script('td-media-uploader-js', plugins_url('/assets/js/media-uploader.js', __FILE__), array('jquery'), TD_SCROLL_PLUGIN_VERSION, true);
 }
-
 
 // Enqueue scripts and styles in frontend
 add_action('wp_enqueue_scripts', 'td_scroll_enqueue_scripts');
-function td_scroll_enqueue_scripts()
-{
-    wp_enqueue_style('top-down-css', plugins_url('/assets/css/top-down.css', __FILE__));
-    wp_enqueue_script('top-down-js', plugins_url('/assets/js/top-down.js', __FILE__), array('jquery'), null, true);
-    wp_enqueue_script('scroll-buttons', plugins_url('/assets/js/button-behaviour.js', __FILE__), array('jquery'), null, true);
-
+function td_scroll_enqueue_scripts() {
+    wp_enqueue_style('top-down-css', plugins_url('/assets/css/top-down.css', __FILE__), array(), TD_SCROLL_PLUGIN_VERSION);
+    wp_enqueue_script('top-down-js', plugins_url('/assets/js/top-down.js', __FILE__), array('jquery'), TD_SCROLL_PLUGIN_VERSION, true);
+    wp_enqueue_script('scroll-buttons', plugins_url('/assets/js/button-behaviour.js', __FILE__), array('jquery'), TD_SCROLL_PLUGIN_VERSION, true);
     wp_enqueue_media();
-    wp_enqueue_script('td-media-uploader', plugins_url('/assets/js/media-uploader.js', __FILE__), array('jquery'), null, true);
 }
-
 
 // Function to add a custom page under the "Appearance" menu
 function td_scroll_theme_page() {
@@ -77,7 +77,6 @@ function td_scroll_theme_page() {
 }
 add_action('admin_menu', 'td_scroll_theme_page');
 
-
 // Function to display scroll-to-top button
 function td_scroll_to_top_button() {
     $position = get_option('td_position', 'left'); // Default to 'left' if not set
@@ -90,7 +89,6 @@ function td_scroll_to_top_button() {
     <?php
 }
 
-
 // Function to display scroll-to-down button
 function td_scroll_to_down_button() {
     $position = get_option('td_position', 'left'); // Default to 'left' if not set
@@ -102,11 +100,8 @@ function td_scroll_to_down_button() {
     <?php
 }
 
-
 // UPLOAD ENGINE
 function load_wp_media_files() {
     wp_enqueue_media();
 }
-add_action( 'admin_enqueue_scripts', 'load_wp_media_files' );
-
-
+add_action('admin_enqueue_scripts', 'load_wp_media_files');

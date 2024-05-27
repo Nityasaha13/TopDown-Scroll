@@ -4,6 +4,7 @@ function top_down_scroll_page_content() {
     ?>
     <div class="wrap">
         <h2>Top-Down Scroll Settings</h2>
+        <p>The ultimate solution for your site navigation. The control is in your hand!</p>
         
         <form method="post" action="options.php">
             <?php settings_fields('td_scroll_options'); ?>
@@ -41,10 +42,10 @@ function top_down_scroll_page_content() {
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="td-table-heading">Upload Top Button Icon:</th>
+                    <th scope="row" class="td-table-heading">Upload Scroll-Top Icon:</th>
                     <td class="td-table-data">
                         <input type="hidden" name="top_button_icon_url" id="top_button_icon_url" value="<?php echo esc_attr(get_option('top_button_icon_url')); ?>">
-                        <button type="button" class="button rudr-upload" id="upload_top_button_icon">Select Up Icon</button>
+                        <button type="button" class="button rudr-upload" id="upload_top_button_icon">Select Icon</button>
                         <div id="top_button_icon_preview" style="margin-top: 10px;">
                             <?php if ($top_icon_url = get_option('top_button_icon_url')) : ?>
                                 <img src="<?php echo esc_url($top_icon_url); ?>" alt="Top Button Icon" style="width: 30px; height: 30px;">
@@ -54,10 +55,10 @@ function top_down_scroll_page_content() {
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="td-table-heading">Upload Down Button Icon:</th>
+                    <th scope="row" class="td-table-heading">Upload Scroll-Down Icon:</th>
                     <td class="td-table-data">
                         <input type="hidden" name="down_button_icon_url" id="down_button_icon_url" value="<?php echo esc_attr(get_option('down_button_icon_url')); ?>">
-                        <button type="button" class="button rudr-upload" id="upload_down_button_icon">Select Down Icon</button>
+                        <button type="button" class="button rudr-upload" id="upload_down_button_icon">Select Icon</button>
                         <div id="down_button_icon_preview" style="margin-top: 10px;">
                             <?php if ($down_icon_url = get_option('down_button_icon_url')) : ?>
                                 <img src="<?php echo esc_url($down_icon_url); ?>" alt="Down Button Icon" style="width: 30px; height: 30px;">
