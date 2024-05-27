@@ -80,11 +80,12 @@ add_action('admin_menu', 'td_scroll_theme_page');
 // Function to display scroll-to-top button
 function td_scroll_to_top_button() {
     $position = get_option('td_position', 'left'); // Default to 'left' if not set
+    $icon_size = get_option('td_icon_size', '30')?: '30';;
     $bottom_position = get_option('enable_down') === 'on' ? '75px' : '20px';
     $top_icon_url = get_option('top_button_icon_url') ? get_option('top_button_icon_url') : plugins_url('/assets/images/up2.svg', __FILE__);
     ?>
     <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>" style="bottom: <?php echo esc_attr($bottom_position); ?>;">
-        <img src="<?php echo esc_url($top_icon_url); ?>" alt="top">
+        <img src="<?php echo esc_url($top_icon_url); ?>" alt="top down scroll to top" style="width:<?php echo esc_attr($icon_size);?>px;">
     </button>
     <?php
 }
@@ -92,10 +93,11 @@ function td_scroll_to_top_button() {
 // Function to display scroll-to-down button
 function td_scroll_to_down_button() {
     $position = get_option('td_position', 'left'); // Default to 'left' if not set
+    $icon_size = get_option('td_icon_size', '30') ?: '30';
     $down_icon_url = get_option('down_button_icon_url') ? get_option('down_button_icon_url') : plugins_url('/assets/images/down2.svg', __FILE__);
     ?>
     <button id="td-scroll-to-down" class="td-down-btn td-position-<?php echo esc_attr($position); ?>">
-        <img src="<?php echo esc_url($down_icon_url); ?>" alt="down">
+        <img src="<?php echo esc_url($down_icon_url); ?>" alt="top down scroll to down" style="width:<?php echo esc_attr($icon_size);?>px;">
     </button>
     <?php
 }

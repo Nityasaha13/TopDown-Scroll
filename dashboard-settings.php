@@ -7,6 +7,7 @@ function td_scroll_register_settings() {
     register_setting('td_scroll_options', 'td_position', 'sanitize_radio');
     register_setting('td_scroll_options', 'top_button_icon_url', 'esc_url_raw');
     register_setting('td_scroll_options', 'down_button_icon_url', 'esc_url_raw');
+    register_setting('td_scroll_options', 'td_icon_size');
 }
 add_action('admin_init', 'td_scroll_register_settings');
 
@@ -30,6 +31,7 @@ function td_scroll_save_settings() {
     update_option('enable_top', isset($_POST['enable_top']) ? 'on' : 'off');
     update_option('enable_down', isset($_POST['enable_down']) ? 'on' : 'off');
     update_option('td_position', sanitize_radio($_POST['td_position']));
+    update_option('td_icon_size', sanitize_text_field($_POST['td_icon_size']));
 
     if (!empty($_POST['top_button_icon_url'])) {
         update_option('top_button_icon_url', esc_url_raw($_POST['top_button_icon_url']));

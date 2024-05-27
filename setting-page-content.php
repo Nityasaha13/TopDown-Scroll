@@ -67,6 +67,15 @@ function top_down_scroll_page_content() {
                         <a href="#" class="rudr-remove" id="remove_down_button_icon" style="<?php echo get_option('down_button_icon_url') ? '' : 'display:none'; ?>">Remove Icon</a>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row" class="td-table-heading">Set Icon Size:</th>
+                    <td class="td-table-data">
+                        <label for="set-icon-size">
+                            <input type="number" name="td_icon_size" id="set-icon-size" placeholder="Enter" value="<?php echo get_option('td_icon_size'); ?>">
+                            px. [Default: 30px]
+                        </label>
+                    </td>
+                </tr>
             </table>
             <?php submit_button('Save', 'primary', 'save_plugin_settings'); ?>
         </form>

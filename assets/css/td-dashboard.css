@@ -14,3 +14,13 @@ td.td-table-data label {
 tr {
     border-bottom: 1px solid #c4c4c4;
 }
+
+input#set-icon-size {
+    width: 130px;
+}
+
+input#save_plugin_settings {
+    padding: 0px 25px;
+    font-size: 16px;
+    margin-top: 15px;
+}
