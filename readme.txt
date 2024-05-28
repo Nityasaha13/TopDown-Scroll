@@ -3,7 +3,7 @@ Contributors: nityasaha
 Tags: scroll to top, scroll to bottom, back to top, smooth scroll, top down scroll
 Requires at least: 4.0
 Tested up to: 5.9
-Stable tag: 1.25
+Stable tag: 1.27
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

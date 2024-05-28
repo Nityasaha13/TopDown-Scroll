@@ -32,11 +32,11 @@ function top_down_scroll_page_content() {
                     <th scope="row" class="td-table-heading">Position:</th>
                     <td class="td-table-data">
                         <label for="td-position-left">
-                            <input type="radio" name="td_position" id="td-position-left" value="left" <?php echo (get_option('td_position') == 'left') ? 'checked="checked"' : ''; ?>>
+                            <input type="radio" name="td_position" id="td-position-left" value="left" <?php echo (get_option('td_position') == 'left') ? 'checked' : ''; ?>>
                             Left
                         </label>
                         <label for="td-position-right">
-                            <input type="radio" name="td_position" id="td-position-right" value="right" <?php echo (get_option('td_position') == 'right') ? 'checked="checked"' : ''; ?>>
+                            <input type="radio" name="td_position" id="td-position-right" value="right" <?php echo (get_option('td_position') == 'right') ? 'checked' : ''; ?>>
                             Right
                         </label>
                     </td>

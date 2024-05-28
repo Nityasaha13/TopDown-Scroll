@@ -16,14 +16,41 @@ require_once("setting-page-content.php");
 
 register_activation_hook(__FILE__, 'td_scroll_activate');
 function td_scroll_activate() {
+    global $wpdb;
+
     // Create transient data for activation notice
     set_transient('td-scroll-activation-notice', true, 5);
+
+    // SQL query to set the options in the wp_options table
+    $wpdb->query("
+        INSERT INTO {$wpdb->options} (option_name, option_value, autoload)
+        VALUES 
+        ('enable_top', 'on', 'yes'),
+        ('td_position', 'left', 'yes')
+        ON DUPLICATE KEY UPDATE
+        option_value = VALUES(option_value)
+    ");
 }
 
+// Register settings
+register_setting('td_scroll_options', 'enable_top', 'sanitize_checkbox');
+register_setting('td_scroll_options', 'td_position', 'sanitize_radio');
+
 register_deactivation_hook(__FILE__, 'td_scroll_deactivate');
-function td_scroll_deactivate()
-{
-    
+function td_scroll_deactivate() {
+
+}
+
+register_uninstall_hook(__FILE__,'td_scroll_uninstall');
+function td_scroll_uninstall(){
+    delete_option('enable_top');
+    delete_option('enable_down');
+    delete_option('td_position');
+    delete_option('top_button_icon_url');
+    delete_option('down_button_icon_url');
+    delete_option('td_icon_size');
+    delete_option('td_background_color');
+    delete_option('td_hover_color');
 }
 
 // Add admin notice
@@ -86,7 +113,7 @@ function td_scroll_to_top_button() {
     $icon_size = get_option('td_icon_size', '20') ?: '20';
     $bg_color = get_option('td_background_color','#046bd2') ?: '#046bd2';
     $hover_color = get_option('td_hover_color', '#046bd2') ?: '#046bd2';
-    $bottom_position = get_option('enable_down') === 'on' ? '62px' : '20px';
+    $bottom_position = get_option('enable_down') === 'on' ? '66px' : '20px';
     $top_icon_url = get_option('top_button_icon_url') ? get_option('top_button_icon_url') : plugins_url('/assets/images/up2.svg', __FILE__);
 
     ?>
