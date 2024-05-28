@@ -32,11 +32,11 @@ function top_down_scroll_page_content() {
                     <th scope="row" class="td-table-heading">Position:</th>
                     <td class="td-table-data">
                         <label for="td-position-left">
-                            <input type="radio" name="td_position" id="td-position-left" value="left" <?php checked(get_option('td_position'), 'left'); ?>>
+                            <input type="radio" name="td_position" id="td-position-left" value="left" <?php echo (get_option('td_position') == 'left') ? 'checked="checked"' : ''; ?>>
                             Left
                         </label>
                         <label for="td-position-right">
-                            <input type="radio" name="td_position" id="td-position-right" value="right" <?php checked(get_option('td_position'), 'right'); ?>>
+                            <input type="radio" name="td_position" id="td-position-right" value="right" <?php echo (get_option('td_position') == 'right') ? 'checked="checked"' : ''; ?>>
                             Right
                         </label>
                     </td>
@@ -48,7 +48,7 @@ function top_down_scroll_page_content() {
                         <button type="button" class="button rudr-upload" id="upload_top_button_icon">Select Icon</button>
                         <div id="top_button_icon_preview" style="margin-top: 10px;">
                             <?php if ($top_icon_url = get_option('top_button_icon_url')) : ?>
-                                <img src="<?php echo esc_url($top_icon_url); ?>" alt="Top Button Icon" style="width: 30px; height: 30px;">
+                                <img src="<?php echo esc_url($top_icon_url); ?>" alt="Top Button Icon" style="width: 50px; height: 50px;">
                             <?php endif; ?>
                         </div>
                         <a href="#" class="rudr-remove" id="remove_top_button_icon" style="<?php echo get_option('top_button_icon_url') ? '' : 'display:none'; ?>">Remove Icon</a>
@@ -61,7 +61,7 @@ function top_down_scroll_page_content() {
                         <button type="button" class="button rudr-upload" id="upload_down_button_icon">Select Icon</button>
                         <div id="down_button_icon_preview" style="margin-top: 10px;">
                             <?php if ($down_icon_url = get_option('down_button_icon_url')) : ?>
-                                <img src="<?php echo esc_url($down_icon_url); ?>" alt="Down Button Icon" style="width: 30px; height: 30px;">
+                                <img src="<?php echo esc_url($down_icon_url); ?>" alt="Down Button Icon" style="width: 50px; height: 50px;">
                             <?php endif; ?>
                         </div>
                         <a href="#" class="rudr-remove" id="remove_down_button_icon" style="<?php echo get_option('down_button_icon_url') ? '' : 'display:none'; ?>">Remove Icon</a>
@@ -72,8 +72,33 @@ function top_down_scroll_page_content() {
                     <td class="td-table-data">
                         <label for="set-icon-size">
                             <input type="number" name="td_icon_size" id="set-icon-size" placeholder="Enter" value="<?php echo get_option('td_icon_size'); ?>">
-                            px. [Default: 30px]
+                            px. [Default: 20px]
                         </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="td-table-heading">Set Icon Background Color:<br>[default: #046bd2]</th>
+                    <td class="td-table-data">
+                        <?php 
+
+                        $bg_color = get_option('td_background_color','#046bd2') ?: '#046bd2';
+                        $hover_color = get_option('td_hover_color', '#046bd2') ?: '#046bd2';
+
+                        ?>
+                        <div class="customColorInput">
+                            <label for="backgroundColorPreview">Background:</label>
+                            <input type="text" id="backgroundColorPreview" name="td_background_color" class="customColorInput__text-input jsColorValue" value="<?php echo $bg_color ?>">
+
+                            <label for="backgroundColorSelection" class="visually-hidden">Background</label>
+                            <input type="color" id="backgroundColorSelection" class="customColorInput__select-input" value="<?php echo $bg_color ?>">
+
+                            <label for="hoverColorPreview" class="ml-40">Hover:</label>
+                            <input type="text" id="hoverColorPreview" name="td_hover_color" class="customColorInput__text-input jsColorValue" value="<?php echo $hover_color ?>">
+
+                            <label for="hoverColorSelection" class="visually-hidden">Hover</label>
+                            <input type="color" id="hoverColorSelection" class="customColorInput__select-input" value="<?php echo $hover_color ?>">
+                        </div>
+
                     </td>
                 </tr>
             </table>

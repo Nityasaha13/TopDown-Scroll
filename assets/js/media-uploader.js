@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
             }).on( 'select', function() {
                 const attachment = customUploader.state().get( 'selection' ).first().toJSON();
                 $(hiddenFieldId).val( attachment.url );
-                $(previewDivId).html( '<img src="' + attachment.url + '" style="width: 30px; height: 30px;">');
+                $(previewDivId).html( '<img src="' + attachment.url + '" style="width: 50px; height: 50px;">');
                 $(removeLinkId).show();
             });
 

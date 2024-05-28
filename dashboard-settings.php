@@ -8,8 +8,11 @@ function td_scroll_register_settings() {
     register_setting('td_scroll_options', 'top_button_icon_url', 'esc_url_raw');
     register_setting('td_scroll_options', 'down_button_icon_url', 'esc_url_raw');
     register_setting('td_scroll_options', 'td_icon_size');
+    register_setting('td_scroll_options', 'td_background_color', 'sanitize_hex_color');
+    register_setting('td_scroll_options', 'td_hover_color', 'sanitize_hex_color');
 }
 add_action('admin_init', 'td_scroll_register_settings');
+
 
 // Sanitize checkbox
 function sanitize_checkbox($input) {
@@ -32,6 +35,13 @@ function td_scroll_save_settings() {
     update_option('enable_down', isset($_POST['enable_down']) ? 'on' : 'off');
     update_option('td_position', sanitize_radio($_POST['td_position']));
     update_option('td_icon_size', sanitize_text_field($_POST['td_icon_size']));
+    
+    if (isset($_POST['td_background_color'])) {
+        update_option('td_background_color', sanitize_hex_color($_POST['td_background_color']));
+    }
+    if (isset($_POST['td_hover_color'])) {
+        update_option('td_hover_color', sanitize_hex_color($_POST['td_hover_color']));
+    }
 
     if (!empty($_POST['top_button_icon_url'])) {
         update_option('top_button_icon_url', esc_url_raw($_POST['top_button_icon_url']));

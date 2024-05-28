@@ -5,31 +5,14 @@
 /* Common styles for the buttons */
 .td-top-btn, .td-down-btn {
   position: fixed;
-  padding: 10px;
-  background-color: white;
-  border: 1px solid rgb(184, 181, 181);
+  padding: 8px;
+  /* background-color: white; */
+  /* border: 1px solid rgb(184, 181, 181); */
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 10%;
   z-index: 9999;
 }
 
-.td-top-btn:focus, .td-down-btn:focus {
-  background-color: white;
-  border: 1px solid rgb(184, 181, 181);
-}
-
-.td-top-btn:hover, .td-down-btn:hover {
-  background-color: white;
-  border: 1px solid rgb(184, 181, 181);
-}
-
-/* .td-top-btn img, .td-down-btn img {
-  width: 30px;
-} */
-
-/* .td-top-btn {
-  bottom: 75px;
-} */
 
 .td-down-btn {
   bottom: 20px;
@@ -42,3 +25,5 @@
 .td-position-right {
   right: 20px; 
 }
+
+

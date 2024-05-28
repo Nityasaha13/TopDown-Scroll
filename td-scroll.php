@@ -3,13 +3,13 @@
 Plugin Name: Top-Down Scroll
 Plugin URI: https://codesocials.com/top-down-scroll/
 Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
-Version: 1.25
+Version: 1.27
 Author: Nitya Saha
 Author URI: https://codesocials.com/nitya-gopal-saha/
 */
 
 // Define plugin version
-define('TD_SCROLL_PLUGIN_VERSION', '1.25');
+define('TD_SCROLL_PLUGIN_VERSION', '1.27');
 
 require_once("dashboard-settings.php");
 require_once("setting-page-content.php");
@@ -53,6 +53,7 @@ function td_scroll_admin_enqueue_scripts($hook) {
     }
     wp_enqueue_style('top-down-admin-css', plugins_url('/assets/css/td-dashboard.css', __FILE__), array(), TD_SCROLL_PLUGIN_VERSION);
     wp_enqueue_script('td-media-uploader-js', plugins_url('/assets/js/media-uploader.js', __FILE__), array('jquery'), TD_SCROLL_PLUGIN_VERSION, true);
+    wp_enqueue_script('td-color-picker-js', plugins_url('/assets/js/color-input.js', __FILE__), array('jquery'), TD_SCROLL_PLUGIN_VERSION, true);
 }
 
 // Enqueue scripts and styles in frontend
@@ -77,33 +78,96 @@ function td_scroll_theme_page() {
 }
 add_action('admin_menu', 'td_scroll_theme_page');
 
+
 // Function to display scroll-to-top button
 function td_scroll_to_top_button() {
-    $position = get_option('td_position', 'left'); // Default to 'left' if not set
-    $icon_size = get_option('td_icon_size', '30')?: '30';;
-    $bottom_position = get_option('enable_down') === 'on' ? '75px' : '20px';
+
+    $position = get_option('td_position', 'left') ?: 'left';
+    $icon_size = get_option('td_icon_size', '20') ?: '20';
+    $bg_color = get_option('td_background_color','#046bd2') ?: '#046bd2';
+    $hover_color = get_option('td_hover_color', '#046bd2') ?: '#046bd2';
+    $bottom_position = get_option('enable_down') === 'on' ? '62px' : '20px';
     $top_icon_url = get_option('top_button_icon_url') ? get_option('top_button_icon_url') : plugins_url('/assets/images/up2.svg', __FILE__);
+
     ?>
-    <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>" style="bottom: <?php echo esc_attr($bottom_position); ?>;">
+
+    <style>
+        .td-top-btn:hover,
+        .td-top-btn:focus {
+            background-color: <?php echo esc_attr($hover_color); ?> !important;
+        }
+
+        .td-down-btn, .td-top-btn{
+            background-color:<?php echo esc_attr($bg_color) ?>;
+        }
+
+        .td-top-btn{
+            bottom: <?php echo esc_attr($bottom_position); ?>;
+        }
+    </style>
+
+    <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>">
         <img src="<?php echo esc_url($top_icon_url); ?>" alt="top down scroll to top" style="width:<?php echo esc_attr($icon_size);?>px;">
     </button>
+    
     <?php
 }
 
 // Function to display scroll-to-down button
 function td_scroll_to_down_button() {
-    $position = get_option('td_position', 'left'); // Default to 'left' if not set
-    $icon_size = get_option('td_icon_size', '30') ?: '30';
+
+    $position = get_option('td_position', 'left') ?: 'left';
+    $icon_size = get_option('td_icon_size', '20') ?: '20';
+    $bg_color = get_option('td_background_color','#046bd2') ?: '#046bd2';
+    $hover_color = get_option('td_hover_color', '#046bd2') ?: '#046bd2';
     $down_icon_url = get_option('down_button_icon_url') ? get_option('down_button_icon_url') : plugins_url('/assets/images/down2.svg', __FILE__);
+
     ?>
+
+    <style>
+        .td-down-btn:hover,
+        .td-down-btn:focus {
+            background-color: <?php echo esc_attr($hover_color); ?> !important;
+        }
+
+        .td-down-btn, .td-top-btn{
+            background-color:<?php echo esc_attr($bg_color) ?>;
+        }
+    </style>
+
     <button id="td-scroll-to-down" class="td-down-btn td-position-<?php echo esc_attr($position); ?>">
         <img src="<?php echo esc_url($down_icon_url); ?>" alt="top down scroll to down" style="width:<?php echo esc_attr($icon_size);?>px;">
     </button>
+
     <?php
 }
+
 
 // UPLOAD ENGINE
 function load_wp_media_files() {
     wp_enqueue_media();
 }
 add_action('admin_enqueue_scripts', 'load_wp_media_files');
+
+
+add_filter( 'wp_check_filetype_and_ext', function($data, $file, $filename, $mimes) {
+    global $wp_version;
+    if ( $wp_version !== '4.7.1' ) {
+       return $data;
+    }
+    $filetype = wp_check_filetype( $filename, $mimes );
+    return [
+        'ext'             => $filetype['ext'],
+        'type'            => $filetype['type'],
+        'proper_filename' => $data['proper_filename']
+    ];
+  }, 10, 4 );
+  function cc_mime_types( $mimes ){
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+  }
+  add_filter( 'upload_mimes', 'cc_mime_types' );
+  function fix_svg() {
+    echo '';
+  }
+  add_action( 'admin_head', 'fix_svg' );
