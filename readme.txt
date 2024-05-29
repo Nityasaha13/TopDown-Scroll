@@ -3,7 +3,7 @@ Contributors: nityasaha
 Tags: scroll to top, scroll to bottom, back to top, smooth scroll, top down scroll
 Requires at least: 4.0
 Tested up to: 5.9
-Stable tag: 1.27
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,8 @@ Features:
 - Options to enable/disable scroll-to-top and scroll-to-bottom buttons separately
 - Supports various screen sizes and devices
 - Set button position left/right
+- Upload your custom icon
+- Set background color and icon size
 
 == Short Description ==
 
@@ -45,7 +47,7 @@ Yes, you can enable or disable each button separately from the plugin settings p
 == Screenshots ==
 
 1. Scroll buttons.
-3. Plugin settings page.
+2. Plugin settings page.
 
 == Changelog ==
 

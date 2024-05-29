@@ -71,7 +71,7 @@ function top_down_scroll_page_content() {
                     <th scope="row" class="td-table-heading">Set Icon Size:</th>
                     <td class="td-table-data">
                         <label for="set-icon-size">
-                            <input type="number" name="td_icon_size" id="set-icon-size" placeholder="Enter" value="<?php echo get_option('td_icon_size'); ?>">
+                            <input type="number" name="td_icon_size" id="set-icon-size" placeholder="Enter" value="<?php echo esc_attr(get_option('td_icon_size')); ?>">
                             px. [Default: 20px]
                         </label>
                     </td>
@@ -87,16 +87,16 @@ function top_down_scroll_page_content() {
                         ?>
                         <div class="customColorInput">
                             <label for="backgroundColorPreview">Background:</label>
-                            <input type="text" id="backgroundColorPreview" name="td_background_color" class="customColorInput__text-input jsColorValue" value="<?php echo $bg_color ?>">
+                            <input type="text" id="backgroundColorPreview" name="td_background_color" class="customColorInput__text-input jsColorValue" value="<?php echo esc_attr($bg_color) ?>">
 
                             <label for="backgroundColorSelection" class="visually-hidden">Background</label>
-                            <input type="color" id="backgroundColorSelection" class="customColorInput__select-input" value="<?php echo $bg_color ?>">
+                            <input type="color" id="backgroundColorSelection" class="customColorInput__select-input" value="<?php echo esc_attr($bg_color) ?>">
 
                             <label for="hoverColorPreview" class="ml-40">Hover:</label>
-                            <input type="text" id="hoverColorPreview" name="td_hover_color" class="customColorInput__text-input jsColorValue" value="<?php echo $hover_color ?>">
+                            <input type="text" id="hoverColorPreview" name="td_hover_color" class="customColorInput__text-input jsColorValue" value="<?php echo esc_attr($hover_color) ?>">
 
                             <label for="hoverColorSelection" class="visually-hidden">Hover</label>
-                            <input type="color" id="hoverColorSelection" class="customColorInput__select-input" value="<?php echo $hover_color ?>">
+                            <input type="color" id="hoverColorSelection" class="customColorInput__select-input" value="<?php echo esc_attr($hover_color) ?>">
                         </div>
 
                     </td>

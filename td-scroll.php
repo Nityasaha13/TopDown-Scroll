@@ -3,43 +3,37 @@
 Plugin Name: Top-Down Scroll
 Plugin URI: https://codesocials.com/top-down-scroll/
 Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
-Version: 1.27
+Version: 1.3.0
 Author: Nitya Saha
 Author URI: https://codesocials.com/nitya-gopal-saha/
 */
 
 // Define plugin version
-define('TD_SCROLL_PLUGIN_VERSION', '1.27');
+define('TD_SCROLL_PLUGIN_VERSION', '1.3.0');
 
 require_once("dashboard-settings.php");
 require_once("setting-page-content.php");
 
 register_activation_hook(__FILE__, 'td_scroll_activate');
 function td_scroll_activate() {
-    global $wpdb;
 
     // Create transient data for activation notice
     set_transient('td-scroll-activation-notice', true, 5);
 
-    // SQL query to set the options in the wp_options table
-    $wpdb->query("
-        INSERT INTO {$wpdb->options} (option_name, option_value, autoload)
-        VALUES 
-        ('enable_top', 'on', 'yes'),
-        ('td_position', 'left', 'yes')
-        ON DUPLICATE KEY UPDATE
-        option_value = VALUES(option_value)
-    ");
+    if (empty(get_option('td_position'))) {
+        add_option('td_position', 'left');
+    }
+    if (empty(get_option('enable_top'))) {
+        add_option('enable_top', 'on');
+    }
 }
 
-// Register settings
-register_setting('td_scroll_options', 'enable_top', 'sanitize_checkbox');
-register_setting('td_scroll_options', 'td_position', 'sanitize_radio');
 
 register_deactivation_hook(__FILE__, 'td_scroll_deactivate');
 function td_scroll_deactivate() {
 
 }
+
 
 register_uninstall_hook(__FILE__,'td_scroll_uninstall');
 function td_scroll_uninstall(){
