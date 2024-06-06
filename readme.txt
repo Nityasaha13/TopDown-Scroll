@@ -4,7 +4,7 @@ Tags: scroll to top, scroll to bottom, back to top, smooth scroll, top down scro
 Requires at least:6.0
 Tested up to: 6.5.3
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,10 +50,29 @@ Yes, you can enable or disable each button separately from the plugin settings p
 
 == Changelog ==
 
+= 1.3.1 =
+* Security and optimization
+
 = 1.3 =
-* Production Ready
+* Bug-free
+
+= 1.2 =
+* All required features added
+
+= 1.1 =
+* First release
 
 == Upgrade Notice ==
 
+= 1.3.1 =
+* This version includes security improvements and optimizations. Monthly updates will ensure the plugin remains secure and efficient.
+
+= 1.3 =
+* This version is bug-free. Monthly updates will ensure the plugin remains secure and efficient.
+
+= 1.2 =
+* All required features have been added in this version. Monthly updates will ensure the plugin remains secure and efficient.
+
 = 1.1 =
-This is the initial release of the plugin.
+* This is the initial release of the plugin. Monthly updates will ensure the plugin remains secure and efficient.
+
