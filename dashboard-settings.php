@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 // Register setting and sanitize
 function td_scroll_register_settings() {
     register_setting('td_scroll_options', 'enable_top', 'sanitize_checkbox');

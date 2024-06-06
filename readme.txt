@@ -1,11 +1,14 @@
 === Top-Down Scroll ===
 Contributors: nityasaha
 Tags: scroll to top, scroll to bottom, back to top, smooth scroll, top down scroll
-Requires at least: 4.0
-Tested up to: 5.9
+Requires at least:6.0
+Tested up to: 6.5.3
+Requires PHP: 7.4
 Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+Enhance user navigation on your WordPress website with customizable scroll-to-top and scroll-to-bottom buttons.
 
 == Description ==
 
@@ -19,10 +22,6 @@ Features:
 - Set button position left/right
 - Upload your custom icon
 - Set background color and icon size
-
-== Short Description ==
-
-Enhance user navigation on your WordPress website with customizable scroll-to-top and scroll-to-bottom buttons.
 
 == Installation ==
 
@@ -51,8 +50,8 @@ Yes, you can enable or disable each button separately from the plugin settings p
 
 == Changelog ==
 
-= 1.1 =
-* Initial release
+= 1.3 =
+* Production Ready
 
 == Upgrade Notice ==
 

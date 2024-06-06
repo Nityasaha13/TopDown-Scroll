@@ -1,18 +1,22 @@
 <?php
 /*
-Plugin Name: Top-Down Scroll
-Plugin URI: https://codesocials.com/top-down-scroll/
-Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
-Version: 1.3.0
-Author: Nitya Saha
-Author URI: https://codesocials.com/nitya-gopal-saha/
+    Plugin Name: Top-Down Scroll
+    Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
+    Version: 1.3.0
+    Author: Nitya Saha
+    Author URI: https://codesocials.com/nitya-gopal-saha/
+    License: GPLv2 or later
+    Text Domain: top-down-scroll
 */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 // Define plugin version
-define('TD_SCROLL_PLUGIN_VERSION', '1.3.0');
+define('TD_SCROLL_PLUGIN_VERSION', '1.3.0'); 
 
 require_once("dashboard-settings.php");
 require_once("setting-page-content.php");
+require_once("assets/includes/button-styles.php");
 
 register_activation_hook(__FILE__, 'td_scroll_activate');
 function td_scroll_activate() {
@@ -104,31 +108,12 @@ add_action('admin_menu', 'td_scroll_theme_page');
 function td_scroll_to_top_button() {
 
     $position = get_option('td_position', 'left') ?: 'left';
-    $icon_size = get_option('td_icon_size', '20') ?: '20';
-    $bg_color = get_option('td_background_color','#046bd2') ?: '#046bd2';
-    $hover_color = get_option('td_hover_color', '#046bd2') ?: '#046bd2';
-    $bottom_position = get_option('enable_down') === 'on' ? '66px' : '20px';
     $top_icon_url = get_option('top_button_icon_url') ? get_option('top_button_icon_url') : plugins_url('/assets/images/up2.svg', __FILE__);
 
     ?>
 
-    <style>
-        .td-top-btn:hover,
-        .td-top-btn:focus {
-            background-color: <?php echo esc_attr($hover_color); ?> !important;
-        }
-
-        .td-down-btn, .td-top-btn{
-            background-color:<?php echo esc_attr($bg_color) ?>;
-        }
-
-        .td-top-btn{
-            bottom: <?php echo esc_attr($bottom_position); ?>;
-        }
-    </style>
-
     <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>">
-        <img src="<?php echo esc_url($top_icon_url); ?>" alt="top down scroll to top" style="width:<?php echo esc_attr($icon_size);?>px;">
+        <img src="<?php echo esc_url($top_icon_url); ?>" alt="top down scroll to top">
     </button>
     
     <?php
@@ -138,26 +123,12 @@ function td_scroll_to_top_button() {
 function td_scroll_to_down_button() {
 
     $position = get_option('td_position', 'left') ?: 'left';
-    $icon_size = get_option('td_icon_size', '20') ?: '20';
-    $bg_color = get_option('td_background_color','#046bd2') ?: '#046bd2';
-    $hover_color = get_option('td_hover_color', '#046bd2') ?: '#046bd2';
     $down_icon_url = get_option('down_button_icon_url') ? get_option('down_button_icon_url') : plugins_url('/assets/images/down2.svg', __FILE__);
 
     ?>
 
-    <style>
-        .td-down-btn:hover,
-        .td-down-btn:focus {
-            background-color: <?php echo esc_attr($hover_color); ?> !important;
-        }
-
-        .td-down-btn, .td-top-btn{
-            background-color:<?php echo esc_attr($bg_color) ?>;
-        }
-    </style>
-
     <button id="td-scroll-to-down" class="td-down-btn td-position-<?php echo esc_attr($position); ?>">
-        <img src="<?php echo esc_url($down_icon_url); ?>" alt="top down scroll to down" style="width:<?php echo esc_attr($icon_size);?>px;">
+        <img src="<?php echo esc_url($down_icon_url); ?>" alt="top down scroll to down">
     </button>
 
     <?php
@@ -165,10 +136,10 @@ function td_scroll_to_down_button() {
 
 
 // UPLOAD ENGINE
-function load_wp_media_files() {
+function td_scroll_load_wp_media_files() {
     wp_enqueue_media();
 }
-add_action('admin_enqueue_scripts', 'load_wp_media_files');
+add_action('admin_enqueue_scripts', 'td_scroll_load_wp_media_files');
 
 
 add_filter( 'wp_check_filetype_and_ext', function($data, $file, $filename, $mimes) {
