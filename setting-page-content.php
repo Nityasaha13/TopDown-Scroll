@@ -7,6 +7,8 @@ function tdsc_top_down_scroll_page_content() {
     <div class="wrap">
         <h2>Top-Down Scroll Settings</h2>
         <p>The ultimate solution for your site navigation. The control is in your hand!</p>
+
+        <?php settings_errors(); ?>
         
         <form method="post" action="options.php">
             <?php settings_fields('tdsc_scroll_options'); ?>
@@ -34,11 +36,11 @@ function tdsc_top_down_scroll_page_content() {
                     <th scope="row" class="td-table-heading">Position:</th>
                     <td class="td-table-data">
                         <label for="td-position-left">
-                            <input type="radio" name="tdsc_position" id="td-position-left" value="left" <?php echo (get_option('tdsc_position') == 'left') ? 'checked' : ''; ?>>
+                            <input type="radio" name="tdsc_position" id="td-position-left" value="left" <?php echo (esc_attr(get_option('tdsc_position')) == 'left') ? 'checked' : ''; ?>>
                             Left
                         </label>
                         <label for="td-position-right">
-                            <input type="radio" name="tdsc_position" id="td-position-right" value="right" <?php echo (get_option('tdsc_position') == 'right') ? 'checked' : ''; ?>>
+                            <input type="radio" name="tdsc_position" id="td-position-right" value="right" <?php echo (esc_attr(get_option('tdsc_position')) == 'right') ? 'checked' : ''; ?>>
                             Right
                         </label>
                     </td>
@@ -49,11 +51,11 @@ function tdsc_top_down_scroll_page_content() {
                         <input type="hidden" name="tdsc_top_button_icon_url" id="top_button_icon_url" value="<?php echo esc_attr(get_option('tdsc_top_button_icon_url')); ?>">
                         <button type="button" class="button rudr-upload" id="upload_top_button_icon">Select Icon</button>
                         <div id="top_button_icon_preview" style="margin-top: 10px;">
-                            <?php if ($top_icon_url = get_option('tdsc_top_button_icon_url')) : ?>
+                            <?php if ($top_icon_url = esc_attr(get_option('tdsc_top_button_icon_url'))) : ?>
                                 <img src="<?php echo esc_url($top_icon_url); ?>" alt="Top Button Icon" style="width: 50px; height: 50px;">
                             <?php endif; ?>
                         </div>
-                        <a href="#" class="rudr-remove" id="remove_top_button_icon" style="<?php echo get_option('tdsc_top_button_icon_url') ? '' : 'display:none'; ?>">Remove Icon</a>
+                        <a href="#" class="rudr-remove" id="remove_top_button_icon" style="<?php echo esc_attr(get_option('tdsc_top_button_icon_url')) ? '' : 'display:none'; ?>">Remove Icon</a>
                     </td>
                 </tr>
                 <tr>
@@ -62,11 +64,11 @@ function tdsc_top_down_scroll_page_content() {
                         <input type="hidden" name="tdsc_down_button_icon_url" id="down_button_icon_url" value="<?php echo esc_attr(get_option('tdsc_down_button_icon_url')); ?>">
                         <button type="button" class="button rudr-upload" id="upload_down_button_icon">Select Icon</button>
                         <div id="down_button_icon_preview" style="margin-top: 10px;">
-                            <?php if ($down_icon_url = get_option('tdsc_down_button_icon_url')) : ?>
+                            <?php if ($down_icon_url = esc_attr(get_option('tdsc_down_button_icon_url'))) : ?>
                                 <img src="<?php echo esc_url($down_icon_url); ?>" alt="Down Button Icon" style="width: 50px; height: 50px;">
                             <?php endif; ?>
                         </div>
-                        <a href="#" class="rudr-remove" id="remove_down_button_icon" style="<?php echo get_option('tdsc_down_button_icon_url') ? '' : 'display:none'; ?>">Remove Icon</a>
+                        <a href="#" class="rudr-remove" id="remove_down_button_icon" style="<?php echo esc_attr(get_option('tdsc_down_button_icon_url')) ? '' : 'display:none'; ?>">Remove Icon</a>
                     </td>
                 </tr>
                 <tr>

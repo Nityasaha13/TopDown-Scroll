@@ -65,14 +65,15 @@ function tdsc_scroll_save_settings() {
 add_action('admin_post_save_plugin_settings', 'tdsc_scroll_save_settings');
 
 // Hook the scroll-to-top button function to wp_footer action
-if (get_option('tdsc_enable_top') === "on") {
+if (sanitize_text_field(get_option('tdsc_enable_top')) === "on") {
     add_action('wp_footer', 'tdsc_scroll_to_top_button');
 }
 
 // Hook the scroll-to-down button function to wp_footer action
-if (get_option('tdsc_enable_down') === "on") {
+if (sanitize_text_field(get_option('tdsc_enable_down')) === "on") {
     add_action('wp_footer', 'tdsc_scroll_to_down_button');
 }
+
 
 
 

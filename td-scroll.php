@@ -107,32 +107,29 @@ add_action('admin_menu', 'tdsc_scroll_theme_page');
 // Function to display scroll-to-top button
 function tdsc_scroll_to_top_button() {
 
-    $position = get_option('tdsc_position', 'left') ?: 'left';
-    $top_icon_url = get_option('tdsc_top_button_icon_url') ? get_option('tdsc_top_button_icon_url') : plugins_url('/assets/images/up2.svg', __FILE__);
+    $position = sanitize_text_field(get_option('tdsc_position', 'left')) ?: 'left';
+    $top_icon_url = esc_url(get_option('tdsc_top_button_icon_url')) ? esc_url(get_option('tdsc_top_button_icon_url')) : plugins_url('/assets/images/up2.svg', __FILE__);
 
     ?>
-
     <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>">
         <img src="<?php echo esc_url($top_icon_url); ?>" alt="top down scroll to top">
     </button>
-    
     <?php
 }
 
 // Function to display scroll-to-down button
 function tdsc_scroll_to_down_button() {
 
-    $position = get_option('tdsc_position', 'left') ?: 'left';
-    $down_icon_url = get_option('tdsc_down_button_icon_url') ? get_option('tdsc_down_button_icon_url') : plugins_url('/assets/images/down2.svg', __FILE__);
+    $position = sanitize_text_field(get_option('tdsc_position', 'left')) ?: 'left';
+    $down_icon_url = esc_url(get_option('tdsc_down_button_icon_url')) ? esc_url(get_option('tdsc_down_button_icon_url')) : plugins_url('/assets/images/down2.svg', __FILE__);
 
     ?>
-
     <button id="td-scroll-to-down" class="td-down-btn td-position-<?php echo esc_attr($position); ?>">
         <img src="<?php echo esc_url($down_icon_url); ?>" alt="top down scroll to down">
     </button>
-
     <?php
 }
+
 
 
 // UPLOAD ENGINE

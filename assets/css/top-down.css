@@ -26,4 +26,6 @@
   right: 20px; 
 }
 
-
+button#td-scroll-to-top, button#td-scroll-to-down {
+  border-radius: 3px;
+}
