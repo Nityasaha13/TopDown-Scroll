@@ -1,10 +1,10 @@
 === Top-Down Scroll ===
 Contributors: nityasaha
-Tags: scroll to top, scroll to bottom, back to top, smooth scroll, top down scroll
+Tags: scroll to top, topdown scroll, back to top, top-down scroll, top down scroll
 Requires at least:6.0
-Tested up to: 6.5.3
+Tested up to: 6.7.1
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,9 @@ Yes, you can enable or disable each button separately from the plugin settings p
 
 == Changelog ==
 
+= 1.3.2 =
+* Compatabillity
+
 = 1.3.1 =
 * Security and optimization
 
@@ -63,6 +66,9 @@ Yes, you can enable or disable each button separately from the plugin settings p
 * First release
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+* Compatable with latets version of WordPress
 
 = 1.3.1 =
 * This version includes security improvements and optimizations. Monthly updates will ensure the plugin remains secure and efficient.

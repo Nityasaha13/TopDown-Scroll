@@ -2,7 +2,7 @@
 /*
     Plugin Name: Top-Down Scroll
     Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
-    Version: 1.3.1
+    Version: 1.3.2
     Author: Nitya Saha
     Author URI: https://codesocials.com/nitya-gopal-saha/
     License: GPLv2 or later
@@ -12,7 +12,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define plugin version
-define('TDSC_SCROLL_PLUGIN_VERSION', '1.3.1'); 
+define('TDSC_SCROLL_PLUGIN_VERSION', '1.3.2'); 
 
 require_once("dashboard-settings.php");
 require_once("setting-page-content.php");
