@@ -2,7 +2,7 @@
 /*
     Plugin Name: Top-Down Scroll
     Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
-    Version: 1.3.2
+    Version: 1.3.3
     Author: Nitya Saha
     Author URI: https://codesocials.com/nitya-gopal-saha/
     License: GPLv2 or later
@@ -12,7 +12,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define plugin version
-define('TDSC_SCROLL_PLUGIN_VERSION', '1.3.2'); 
+define('TDSC_SCROLL_PLUGIN_VERSION', '1.3.3'); 
 
 require_once("dashboard-settings.php");
 require_once("setting-page-content.php");
@@ -62,7 +62,7 @@ function tdsc_scroll_activate_admin_notice() {
     if (get_transient('tdsc-scroll-activation-notice')) {
         ?>
         <div class="updated notice is-dismissible">
-            <p><?php esc_html_e('Add scroll buttons from settings. Goto Appearance>Top-Down Scroll.', 'plugin-text-domain'); ?></p>
+            <p><?php esc_html_e('Add scroll buttons from settings. Goto Appearance>Top-Down Scroll.', 'top-down-scroll'); ?></p>
         </div>
         <?php
         // Delete transient, only display this notice once
@@ -162,3 +162,43 @@ function tdsc_fix_svg() {
 echo '';
 }
 add_action( 'admin_head', 'tdsc_fix_svg' );
+
+
+
+if ( ! class_exists( 'TDSC_Main' ) ) {
+    class TDSC_Main {
+
+        private $plugin_basename;
+
+        public function __construct() {
+            // Get the plugin basename.
+            $this->plugin_basename = plugin_basename( __FILE__ );
+            // Initialize the plugin when plugins are loaded.
+            add_action( 'plugins_loaded', array( $this, 'init' ) );
+        }
+
+        public function init() {
+            // Add settings link on the plugins page.
+            add_filter( 'plugin_action_links_' . $this->plugin_basename, array( $this, 'insert_view_logs_link' ) );
+            add_filter( 'plugin_row_meta', array( $this, 'addon_plugin_links' ), 10, 2 );
+        }
+
+        public function insert_view_logs_link( $links ) {
+            $settings_link = '<a href="' . esc_url( admin_url( 'themes.php?page=top-down-scroll-page' ) ) . '">' . esc_html__( 'Settings', 'top-down-scroll' ) . '</a>';
+            array_unshift( $links, $settings_link );
+            return $links;
+        }
+
+        public function addon_plugin_links( $links, $file ) {
+            if ( $file === $this->plugin_basename ) {
+                $links[] = __( '<a href="https://buymeacoffee.com/nityasaha">Donate</a>', 'top-down-scroll' );
+                $links[] = __( 'Made with Love ❤️', 'top-down-scroll' );
+            }
+    
+            return $links;
+        }
+    }
+}
+
+// Instantiate the main plugin class.
+new TDSC_Main();
