@@ -11,4 +11,4 @@ Features:
 - Upload your custom icon
 - Set background color and icon size
 
-![Scroll Buttons](assets/screenshots/Screenshot2.png)
+![Scroll Buttons](assets/images/admin-page.png) 

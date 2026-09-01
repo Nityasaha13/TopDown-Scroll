@@ -9,7 +9,7 @@ function tdsc_scroll_register_settings() {
     register_setting('tdsc_scroll_options', 'tdsc_position', 'tdsc_sanitize_radio');
     register_setting('tdsc_scroll_options', 'tdsc_top_button_icon_url', 'esc_url_raw');
     register_setting('tdsc_scroll_options', 'tdsc_down_button_icon_url', 'esc_url_raw');
-    register_setting('tdsc_scroll_options', 'tdsc_icon_size');
+    register_setting('tdsc_scroll_options', 'tdsc_icon_size', 'tdsc_sanitize_icon_size');
     register_setting('tdsc_scroll_options', 'tdsc_background_color', 'sanitize_hex_color');
     register_setting('tdsc_scroll_options', 'tdsc_hover_color', 'sanitize_hex_color');
 }
@@ -25,6 +25,15 @@ function tdsc_sanitize_checkbox($input) {
 function tdsc_sanitize_radio($input) {
     $valid = array('left', 'right');
     return in_array($input, $valid) ? $input : 'left'; // Default to 'left' if invalid
+}
+
+// Sanitize icon size. An empty value is kept as-is so the 20px default applies.
+function tdsc_sanitize_icon_size($input) {
+    $input = trim((string) $input);
+    if ('' === $input) {
+        return '';
+    }
+    return (string) absint($input); // No upper clamp, so existing custom sizes are preserved.
 }
 
 // Function to handle saving of settings
