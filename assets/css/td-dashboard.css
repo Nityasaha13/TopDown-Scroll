@@ -1,0 +1,78 @@
+
+td.td-table-data,th.td-table-heading {
+    padding: 10px;
+}
+
+p.submit {
+    margin: 10px; 
+}
+
+td.td-table-data label {
+    margin-right: 20px;
+}
+
+tr {
+    border-bottom: 1px solid #c4c4c4;
+}
+
+input#set-icon-size {
+    width: 130px;
+}
+
+input#save_plugin_settings {
+    padding: 0px 25px;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+
+/*For the color input*/
+.visually-hidden {
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	white-space: nowrap !important;
+	border: 0 !important;
+	position: absolute !important;
+}
+
+input::-webkit-color-swatch {
+	border: 0;
+}
+
+input::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+
+
+.customColorInput.isReadOnly {
+	cursor: not-allowed;
+}
+
+
+.customColorInput__text-input:focus {
+	outline: none;
+}
+
+.customColorInput__select-input {
+    order: 2;
+    width: 40px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: -8px;
+}
+
+.customColorInput__select-input::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+
+.ml-40 {
+    margin-left: 40px;
+}
