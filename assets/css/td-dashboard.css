@@ -366,7 +366,7 @@
 	align-items: center;
 }
 
-.tdsc-wrap input#set-icon-size {
+.tdsc-wrap input#set-icon-size, .tdsc-wrap input.tdsc-input {
 	width: 96px;
 }
 

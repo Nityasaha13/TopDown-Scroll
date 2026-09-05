@@ -9,9 +9,11 @@ function tdsc_scroll_register_settings() {
     register_setting('tdsc_scroll_options', 'tdsc_position', 'tdsc_sanitize_radio');
     register_setting('tdsc_scroll_options', 'tdsc_top_button_icon_url', 'esc_url_raw');
     register_setting('tdsc_scroll_options', 'tdsc_down_button_icon_url', 'esc_url_raw');
-    register_setting('tdsc_scroll_options', 'tdsc_icon_size', 'tdsc_sanitize_icon_size');
+    register_setting('tdsc_scroll_options', 'tdsc_icon_size', 'tdsc_sanitize_size');
     register_setting('tdsc_scroll_options', 'tdsc_background_color', 'sanitize_hex_color');
     register_setting('tdsc_scroll_options', 'tdsc_hover_color', 'sanitize_hex_color');
+    register_setting('tdsc_scroll_options', 'tdsc_border_radius', 'tdsc_sanitize_size');
+    register_setting('tdsc_scroll_options', 'tdsc_button_padding', 'tdsc_sanitize_size');
 }
 add_action('admin_init', 'tdsc_scroll_register_settings');
 
@@ -28,7 +30,7 @@ function tdsc_sanitize_radio($input) {
 }
 
 // Sanitize icon size. An empty value is kept as-is so the 20px default applies.
-function tdsc_sanitize_icon_size($input) {
+function tdsc_sanitize_size($input) {
     $input = trim((string) $input);
     if ('' === $input) {
         return '';
@@ -53,6 +55,14 @@ function tdsc_scroll_save_settings() {
     }
     if (isset($_POST['tdsc_hover_color'])) {
         update_option('tdsc_hover_color', sanitize_hex_color($_POST['tdsc_hover_color']));
+    }
+
+    if (isset($_POST['tdsc_border_radius'])) {
+        update_option('tdsc_border_radius', sanitize_text_field($_POST['tdsc_border_radius']));
+    }
+
+    if (isset($_POST['tdsc_button_padding'])) {
+        update_option('tdsc_button_padding', sanitize_text_field($_POST['tdsc_button_padding']));
     }
 
     if (!empty($_POST['tdsc_top_button_icon_url'])) {

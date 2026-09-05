@@ -109,7 +109,6 @@ Yes. Both buttons use native smooth scrolling, so the page glides to the top or 
 * Redesigned the settings screen: card-based layout, toggle switches, a segmented position control and clearer icon previews
 * Added a "Settings saved" confirmation notice
 * Added input sanitization for the icon size setting
-* Fixed the internal version constant so updated styles and scripts are no longer served from browser cache
 
 = 1.3.5 =
 * Compatabillity

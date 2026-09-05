@@ -9,6 +9,8 @@ function tdsc_dynamic_button_styles(){
     $bg_color = get_option('tdsc_background_color','#046bd2') ?: '#046bd2';
     $hover_color = get_option('tdsc_hover_color', '#046bd2') ?: '#046bd2';
     $bottom_position = get_option('tdsc_enable_down') === 'on' ? '62px' : '20px';
+    $border_radius = get_option('tdsc_border_radius', '0') ?: '0';
+    $button_padding = get_option('tdsc_button_padding', '8') ?: '8';
 ?>
     <style>
         .td-top-btn:hover,
@@ -23,6 +25,8 @@ function tdsc_dynamic_button_styles(){
 
         .td-top-btn {
             bottom: <?php echo esc_attr($bottom_position); ?>;
+            border-radius: <?php echo esc_attr($border_radius); ?>px;
+            padding: <?php echo esc_attr($button_padding); ?>px;
         }
 
         .td-down-btn:hover,
