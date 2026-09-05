@@ -51,6 +51,8 @@ function tdsc_scroll_uninstall(){
     delete_option('tdsc_hover_color');
     delete_option('tdsc_border_radius');
     delete_option('tdsc_button_padding');
+    delete_option('tdsc_bottom_spacing');
+    delete_option('tdsc_side_wall_spacing');
 }
 
 // Add admin notice

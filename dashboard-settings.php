@@ -14,6 +14,8 @@ function tdsc_scroll_register_settings() {
     register_setting('tdsc_scroll_options', 'tdsc_hover_color', 'sanitize_hex_color');
     register_setting('tdsc_scroll_options', 'tdsc_border_radius', 'tdsc_sanitize_size');
     register_setting('tdsc_scroll_options', 'tdsc_button_padding', 'tdsc_sanitize_size');
+    register_setting('tdsc_scroll_options', 'tdsc_bottom_spacing', 'tdsc_sanitize_size');
+    register_setting('tdsc_scroll_options', 'tdsc_side_wall_spacing', 'tdsc_sanitize_size');
 }
 add_action('admin_init', 'tdsc_scroll_register_settings');
 
@@ -49,7 +51,7 @@ function tdsc_scroll_save_settings() {
     update_option('tdsc_enable_down', isset($_POST['tdsc_enable_down']) ? 'on' : 'off');
     update_option( 'tdsc_position', tdsc_sanitize_radio( sanitize_text_field( wp_unslash( $_POST['tdsc_position'] ) ) ) );
     update_option('tdsc_icon_size', sanitize_text_field($_POST['tdsc_icon_size']));
-    
+
     if (isset($_POST['tdsc_background_color'])) {
         update_option('tdsc_ackground_color', sanitize_hex_color($_POST['tdsc_background_color']));
     }
@@ -63,6 +65,14 @@ function tdsc_scroll_save_settings() {
 
     if (isset($_POST['tdsc_button_padding'])) {
         update_option('tdsc_button_padding', sanitize_text_field($_POST['tdsc_button_padding']));
+    }
+
+    if (isset($_POST['tdsc_bottom_spacing'])) {
+        update_option('tdsc_bottom_spacing', sanitize_text_field($_POST['tdsc_bottom_spacing']));
+    }
+
+    if (isset($_POST['tdsc_side_wall_spacing'])) {
+        update_option('tdsc_side_wall_spacing', sanitize_text_field($_POST['tdsc_side_wall_spacing']));
     }
 
     if (!empty($_POST['tdsc_top_button_icon_url'])) {

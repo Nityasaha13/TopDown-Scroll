@@ -23,6 +23,14 @@ function tdsc_top_down_scroll_page_content() {
     $hover_color = get_option( 'tdsc_hover_color', '#046bd2' ) ?: '#046bd2';
     $border_radius = get_option( 'tdsc_border_radius', '0' ) ?: '0';
     $button_padding = get_option( 'tdsc_button_padding', '8' ) ?: '8';
+    $bottom_spacing = get_option( 'tdsc_bottom_spacing', '20' );
+    $side_wall_spacing = get_option( 'tdsc_side_wall_spacing', '20' );
+    if ( '' === $bottom_spacing ) {
+        $bottom_spacing = '20';
+    }
+    if ( '' === $side_wall_spacing ) {
+        $side_wall_spacing = '20';
+    }
 
     // options.php redirects back with settings-updated=true, but only the core
     // options-*.php screens turn that into a notice, so add it here.
@@ -102,6 +110,58 @@ function tdsc_top_down_scroll_page_content() {
                         </div>
                     </div>
 
+                    <div class="tdsc-field">
+                        <div class="tdsc-field__label">
+                            <label for="set-border-radius"><?php esc_html_e( 'Border Radius', 'top-down-scroll' ); ?></label>
+                            <p class="tdsc-field__hint"><?php esc_html_e( 'Default is 0px.', 'top-down-scroll' ); ?></p>
+                        </div>
+                        <div class="tdsc-field__control">
+                            <span class="tdsc-number">
+                                <input type="number" name="tdsc_border_radius" id="set-border-radius" class="tdsc-input" min="0" step="1" placeholder="20" value="<?php echo esc_attr( $border_radius ); ?>">
+                                <span class="tdsc-suffix"><?php esc_html_e( 'px', 'top-down-scroll' ); ?></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="tdsc-field">
+                        <div class="tdsc-field__label">
+                            <label for="set-button-padding"><?php esc_html_e( 'Button Padding', 'top-down-scroll' ); ?></label>
+                            <p class="tdsc-field__hint"><?php esc_html_e( 'Default is 8px.', 'top-down-scroll' ); ?></p>
+                        </div>
+                        <div class="tdsc-field__control">
+                            <span class="tdsc-number">
+                                <input type="number" name="tdsc_button_padding" id="set-button-padding" class="tdsc-input" min="0" step="1" placeholder="8" value="<?php echo esc_attr( $button_padding ); ?>">
+                                <span class="tdsc-suffix"><?php esc_html_e( 'px', 'top-down-scroll' ); ?></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="tdsc-field">
+                        <div class="tdsc-field__label">
+                            <label for="set-bottom-spacing"><?php esc_html_e( 'Bottom Spacing', 'top-down-scroll' ); ?></label>
+                            <p class="tdsc-field__hint"><?php esc_html_e( 'Default is 20px.', 'top-down-scroll' ); ?></p>
+                        </div>
+                        <div class="tdsc-field__control">
+                            <span class="tdsc-number">
+                                <input type="number" name="tdsc_bottom_spacing" id="set-bottom-spacing" class="tdsc-input" min="0" step="1" placeholder="20" value="<?php echo esc_attr( $bottom_spacing ); ?>">
+                                <span class="tdsc-suffix"><?php esc_html_e( 'px', 'top-down-scroll' ); ?></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="tdsc-field">
+                        <div class="tdsc-field__label">
+                            <label for="set-side-wall-spacing"><?php esc_html_e( 'Side Wall Spacing', 'top-down-scroll' ); ?></label>
+                            <p class="tdsc-field__hint"><?php esc_html_e( 'Default is 20px.', 'top-down-scroll' ); ?></p>
+                        </div>
+                        <div class="tdsc-field__control">
+                            <span class="tdsc-number">
+                                <input type="number" name="tdsc_side_wall_spacing" id="set-side-wall-spacing" class="tdsc-input" min="0" step="1" placeholder="20" value="<?php echo esc_attr( $side_wall_spacing ); ?>">
+                                <span class="tdsc-suffix"><?php esc_html_e( 'px', 'top-down-scroll' ); ?></span>
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -157,33 +217,6 @@ function tdsc_top_down_scroll_page_content() {
                             </span>
                         </div>
                     </div>
-
-                    <div class="tdsc-field">
-                        <div class="tdsc-field__label">
-                            <label for="set-border-radius"><?php esc_html_e( 'Border Radius', 'top-down-scroll' ); ?></label>
-                            <p class="tdsc-field__hint"><?php esc_html_e( 'Default is 0px.', 'top-down-scroll' ); ?></p>
-                        </div>
-                        <div class="tdsc-field__control">
-                            <span class="tdsc-number">
-                                <input type="number" name="tdsc_border_radius" id="set-border-radius" class="tdsc-input" min="0" step="1" placeholder="20" value="<?php echo esc_attr( $border_radius ); ?>">
-                                <span class="tdsc-suffix"><?php esc_html_e( 'px', 'top-down-scroll' ); ?></span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="tdsc-field">
-                        <div class="tdsc-field__label">
-                            <label for="set-button-padding"><?php esc_html_e( 'Button Padding', 'top-down-scroll' ); ?></label>
-                            <p class="tdsc-field__hint"><?php esc_html_e( 'Default is 8px.', 'top-down-scroll' ); ?></p>
-                        </div>
-                        <div class="tdsc-field__control">
-                            <span class="tdsc-number">
-                                <input type="number" name="tdsc_button_padding" id="set-button-padding" class="tdsc-input" min="0" step="1" placeholder="8" value="<?php echo esc_attr( $button_padding ); ?>">
-                                <span class="tdsc-suffix"><?php esc_html_e( 'px', 'top-down-scroll' ); ?></span>
-                            </span>
-                        </div>
-                    </div>
-
 
                 </div>
             </div>
