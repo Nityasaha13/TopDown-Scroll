@@ -5,7 +5,7 @@ Tags: scroll to top, back to top, go to top, scroll to top button, smooth scroll
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.6
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -105,6 +105,9 @@ Yes. Both buttons use native smooth scrolling, so the page glides to the top or 
 
 == Changelog ==
 
+= 1.3.7 =
+* New settings for button padding and border radius
+
 = 1.3.6 =
 * Redesigned the settings screen: card-based layout, toggle switches, a segmented position control and clearer icon previews
 * Added a "Settings saved" confirmation notice
@@ -133,5 +136,5 @@ Yes. Both buttons use native smooth scrolling, so the page glides to the top or 
 
 == Upgrade Notice ==
 
-= 1.3.6 =
-Refreshed settings screen and a fixed asset cache-busting version. Your existing settings and front-end buttons are unchanged.
+= 1.3.7 =
+New settings added.

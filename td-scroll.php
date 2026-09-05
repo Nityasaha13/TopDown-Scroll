@@ -1,10 +1,10 @@
 <?php
 /*
     Plugin Name: Top-Down Scroll
-    Description: This plugin provides Scroll to Top and Scroll to Down functionality to your website. 
-    Version: 1.3.6
+    Description: Add a scroll to top button and an optional scroll to bottom button to any WordPress theme. Custom icon, color, size and position.
+    Version: 1.3.7
     Author: Nitya Saha
-    Author URI: https://codesocials.com/nitya-gopal-saha/
+    Author URI: https://nitya.codesocials.com/
     License: GPLv2 or later
     Text Domain: top-down-scroll
 */
@@ -12,7 +12,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define plugin version
-define('TDSC_SCROLL_PLUGIN_VERSION', '1.3.6'); 
+define('TDSC_SCROLL_PLUGIN_VERSION', '1.3.7'); 
 
 require_once("dashboard-settings.php");
 require_once("setting-page-content.php");
