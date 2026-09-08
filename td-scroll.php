@@ -1,6 +1,6 @@
 <?php
 /*
-    Plugin Name: Top-Down Scroll
+    Plugin Name: Top-Down Scroll – Customizable Scroll to Top Button
     Description: Add a scroll to top button and an optional scroll to bottom button to any WordPress theme. Custom icon, color, size and position.
     Version: 1.3.7
     Author: Nitya Saha
@@ -11,178 +11,195 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// Define plugin version
-define('TDSC_SCROLL_PLUGIN_VERSION', '1.3.7'); 
 
-require_once("dashboard-settings.php");
-require_once("setting-page-content.php");
-require_once("assets/includes/button-styles.php");
+/* -------------------------------------------------------------------------
+ * Constants
+ * ---------------------------------------------------------------------- */
 
-register_activation_hook(__FILE__, 'tdsc_scroll_activate');
-function tdsc_scroll_activate() {
-
-    // Create transient data for activation notice
-    set_transient('tdsc-scroll-activation-notice', true, 5);
-
-    if (empty(get_option('tdsc_position'))) {
-        add_option('tdsc_position', 'left');
-    }
-    if (empty(get_option('tdsc_enable_top'))) {
-        add_option('tdsc_enable_top', 'on');
-    }
-}
+define( 'TDSC_SCROLL_PLUGIN_VERSION', '1.3.7' );
+define( 'TDSC_SCROLL_PLUGIN_FILE', __FILE__ );
+define( 'TDSC_SCROLL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'TDSC_SCROLL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 
-register_deactivation_hook(__FILE__, 'tdsc_scroll_deactivate');
-function tdsc_scroll_deactivate() {
-    
-}
+/* -------------------------------------------------------------------------
+ * Includes
+ *
+ * options.php first: it defines the defaults and getters the others read.
+ * ---------------------------------------------------------------------- */
+
+require_once TDSC_SCROLL_PLUGIN_DIR . 'assets/includes/options.php';
+require_once TDSC_SCROLL_PLUGIN_DIR . 'dashboard-settings.php';
+require_once TDSC_SCROLL_PLUGIN_DIR . 'setting-page-content.php';
+require_once TDSC_SCROLL_PLUGIN_DIR . 'assets/includes/button-styles.php';
+require_once TDSC_SCROLL_PLUGIN_DIR . 'assets/includes/scroll-buttons.php';
+require_once TDSC_SCROLL_PLUGIN_DIR . 'assets/includes/svg-support.php';
 
 
-register_uninstall_hook(__FILE__,'tdsc_scroll_uninstall');
-function tdsc_scroll_uninstall(){
-    delete_option('tdsc_enable_top');
-    delete_option('tdsc_enable_down');
-    delete_option('tdsc_position');
-    delete_option('tdsc_top_button_icon_url');
-    delete_option('tdsc_down_button_icon_url');
-    delete_option('tdsc_icon_size');
-    delete_option('tdsc_background_color');
-    delete_option('tdsc_hover_color');
-    delete_option('tdsc_border_radius');
-    delete_option('tdsc_button_padding');
-    delete_option('tdsc_bottom_spacing');
-    delete_option('tdsc_side_wall_spacing');
-}
+/* -------------------------------------------------------------------------
+ * Activation / deactivation / uninstall
+ * ---------------------------------------------------------------------- */
 
-// Add admin notice
-add_action('admin_notices', 'tdsc_scroll_activate_admin_notice');
+register_activation_hook( __FILE__, 'tdsc_scroll_activate' );
 
 /**
- * Admin Notice on Activation.
+ * Seed the two options the plugin needs a stored value for.
+ *
+ * Everything else falls back to tdsc_get_option_defaults(), so an upgrade never
+ * writes rows over settings a site already has.
+ */
+function tdsc_scroll_activate() {
+
+    // Transient drives the one-time activation notice below.
+    set_transient( 'tdsc-scroll-activation-notice', true, 5 );
+
+    if ( empty( get_option( 'tdsc_position' ) ) ) {
+        add_option( 'tdsc_position', 'left' );
+    }
+    if ( empty( get_option( 'tdsc_enable_top' ) ) ) {
+        add_option( 'tdsc_enable_top', 'on' );
+    }
+}
+
+register_deactivation_hook( __FILE__, 'tdsc_scroll_deactivate' );
+
+/**
+ * Nothing to tear down on deactivation; settings survive until uninstall.
+ */
+function tdsc_scroll_deactivate() {
+}
+
+register_uninstall_hook( __FILE__, 'tdsc_scroll_uninstall' );
+
+/**
+ * Remove every option the plugin creates.
+ */
+function tdsc_scroll_uninstall() {
+
+    $options = array_merge(
+        array_keys( tdsc_get_option_defaults() ),
+        array(
+            'tdsc_enable_top',
+            'tdsc_enable_down',
+            'tdsc_position',
+            'tdsc_top_button_icon_url',
+            'tdsc_down_button_icon_url',
+        )
+    );
+
+    foreach ( $options as $option ) {
+        delete_option( $option );
+    }
+}
+
+
+/* -------------------------------------------------------------------------
+ * Admin notice
+ * ---------------------------------------------------------------------- */
+
+add_action( 'admin_notices', 'tdsc_scroll_activate_admin_notice' );
+
+/**
+ * Point the user at the settings screen right after activation.
  */
 function tdsc_scroll_activate_admin_notice() {
-    // Check transient, if available display notice
-    if (get_transient('tdsc-scroll-activation-notice')) {
-        ?>
-        <div class="updated notice is-dismissible">
-            <p><?php esc_html_e('Add scroll buttons from settings. Goto Appearance>Top-Down Scroll.', 'top-down-scroll'); ?></p>
-        </div>
-        <?php
-        // Delete transient, only display this notice once
-        delete_transient('tdsc-scroll-activation-notice');
-    }
-}
 
-// Enqueue style and scripts in plugin admin pages
-add_action('admin_enqueue_scripts', 'tdsc_scroll_admin_enqueue_scripts');
-function tdsc_scroll_admin_enqueue_scripts($hook) {
-    if ($hook != 'appearance_page_top-down-scroll-page') {
+    if ( ! get_transient( 'tdsc-scroll-activation-notice' ) ) {
         return;
     }
-    wp_enqueue_style('top-down-admin-css', plugins_url('/assets/css/td-dashboard.css', __FILE__), array(), TDSC_SCROLL_PLUGIN_VERSION);
-    wp_enqueue_script('td-media-uploader-js', plugins_url('/assets/js/media-uploader.js', __FILE__), array('jquery'), TDSC_SCROLL_PLUGIN_VERSION, true);
-    wp_enqueue_script('td-color-picker-js', plugins_url('/assets/js/color-input.js', __FILE__), array('jquery'), TDSC_SCROLL_PLUGIN_VERSION, true);
+    ?>
+    <div class="updated notice is-dismissible">
+        <p><?php esc_html_e( 'Add scroll buttons from settings. Goto Appearance>Top-Down Scroll.', 'top-down-scroll' ); ?></p>
+    </div>
+    <?php
+    // Only display this notice once.
+    delete_transient( 'tdsc-scroll-activation-notice' );
 }
 
-// Enqueue scripts and styles in frontend
-add_action('wp_enqueue_scripts', 'tdsc_scroll_enqueue_scripts');
-function tdsc_scroll_enqueue_scripts() {
-    wp_enqueue_style('top-down-css', plugins_url('/assets/css/top-down.css', __FILE__), array(), TDSC_SCROLL_PLUGIN_VERSION);
-    wp_enqueue_script('top-down-js', plugins_url('/assets/js/top-down.js', __FILE__), array('jquery'), TDSC_SCROLL_PLUGIN_VERSION, true);
-    wp_enqueue_script('scroll-buttons', plugins_url('/assets/js/button-behaviour.js', __FILE__), array('jquery'), TDSC_SCROLL_PLUGIN_VERSION, true);
+
+/* -------------------------------------------------------------------------
+ * Assets
+ * ---------------------------------------------------------------------- */
+
+add_action( 'admin_enqueue_scripts', 'tdsc_scroll_admin_enqueue_scripts' );
+
+/**
+ * Admin styles and scripts, limited to this plugin's own screen.
+ *
+ * wp_enqueue_media() belongs here too. It used to run from a separate hook with
+ * no page check, which loaded the whole media library on every admin screen.
+ *
+ * @param string $hook Current admin page.
+ */
+function tdsc_scroll_admin_enqueue_scripts( $hook ) {
+
+    if ( 'appearance_page_top-down-scroll-page' !== $hook ) {
+        return;
+    }
+
+    wp_enqueue_style( 'top-down-admin-css', TDSC_SCROLL_PLUGIN_URL . 'assets/css/td-dashboard.css', array(), TDSC_SCROLL_PLUGIN_VERSION );
+    wp_enqueue_script( 'td-media-uploader-js', TDSC_SCROLL_PLUGIN_URL . 'assets/js/media-uploader.js', array( 'jquery' ), TDSC_SCROLL_PLUGIN_VERSION, true );
+    wp_enqueue_script( 'td-color-picker-js', TDSC_SCROLL_PLUGIN_URL . 'assets/js/color-input.js', array( 'jquery' ), TDSC_SCROLL_PLUGIN_VERSION, true );
+
     wp_enqueue_media();
 }
 
-// Function to add a custom page under the "Appearance" menu
+add_action( 'wp_enqueue_scripts', 'tdsc_scroll_enqueue_scripts' );
+
+/**
+ * Front-end styles and scripts.
+ *
+ * Deliberately no wp_enqueue_media() here: visitors cannot upload anything, and
+ * it was pulling the entire Backbone media stack onto every page of the site.
+ */
+function tdsc_scroll_enqueue_scripts() {
+
+    wp_enqueue_style( 'top-down-css', TDSC_SCROLL_PLUGIN_URL . 'assets/css/top-down.css', array(), TDSC_SCROLL_PLUGIN_VERSION );
+    wp_enqueue_script( 'top-down-js', TDSC_SCROLL_PLUGIN_URL . 'assets/js/top-down.js', array( 'jquery' ), TDSC_SCROLL_PLUGIN_VERSION, true );
+    wp_enqueue_script( 'scroll-buttons', TDSC_SCROLL_PLUGIN_URL . 'assets/js/button-behaviour.js', array( 'jquery' ), TDSC_SCROLL_PLUGIN_VERSION, true );
+}
+
+
+/* -------------------------------------------------------------------------
+ * Admin menu
+ * ---------------------------------------------------------------------- */
+
+add_action( 'admin_menu', 'tdsc_scroll_theme_page' );
+
+/**
+ * Add the settings screen under Appearance.
+ */
 function tdsc_scroll_theme_page() {
-    // Add a new submenu under "Appearance" menu
+
     add_theme_page(
         'Top-Down Scroll',
         'Top-Down Scroll',
         'manage_options',
-        'top-down-scroll-page', 
-        'tdsc_top_down_scroll_page_content' 
+        'top-down-scroll-page',
+        'tdsc_top_down_scroll_page_content'
     );
 }
-add_action('admin_menu', 'tdsc_scroll_theme_page');
 
 
-// Function to display scroll-to-top button
-function tdsc_scroll_to_top_button() {
-
-    $position = sanitize_text_field(get_option('tdsc_position', 'left')) ?: 'left';
-    $top_icon_url = esc_url(get_option('tdsc_top_button_icon_url')) ? esc_url(get_option('tdsc_top_button_icon_url')) : plugins_url('/assets/images/up2.svg', __FILE__);
-
-    ?>
-    <button id="td-scroll-to-top" class="td-top-btn td-position-<?php echo esc_attr($position); ?>">
-        <img src="<?php echo esc_url($top_icon_url); ?>" alt="top down scroll to top">
-    </button>
-    <?php
-}
-
-// Function to display scroll-to-down button
-function tdsc_scroll_to_down_button() {
-
-    $position = sanitize_text_field(get_option('tdsc_position', 'left')) ?: 'left';
-    $down_icon_url = esc_url(get_option('tdsc_down_button_icon_url')) ? esc_url(get_option('tdsc_down_button_icon_url')) : plugins_url('/assets/images/down2.svg', __FILE__);
-
-    ?>
-    <button id="td-scroll-to-down" class="td-down-btn td-position-<?php echo esc_attr($position); ?>">
-        <img src="<?php echo esc_url($down_icon_url); ?>" alt="top down scroll to down">
-    </button>
-    <?php
-}
-
-
-
-// UPLOAD ENGINE
-function tdsc_scroll_load_wp_media_files() {
-    wp_enqueue_media();
-}
-add_action('admin_enqueue_scripts', 'tdsc_scroll_load_wp_media_files');
-
-
-add_filter( 'wp_check_filetype_and_ext', function($data, $file, $filename, $mimes) {
-    global $wp_version;
-    if ( $wp_version !== '4.7.1' ) {
-       return $data;
-    }
-    $filetype = wp_check_filetype( $filename, $mimes );
-    return [
-        'ext'             => $filetype['ext'],
-        'type'            => $filetype['type'],
-        'proper_filename' => $data['proper_filename']
-    ];
-}, 10, 4 );
-
-function tdsc_cc_mime_types( $mimes ){
-$mimes['svg'] = 'image/svg+xml';
-return $mimes;
-}
-add_filter( 'upload_mimes', 'tdsc_cc_mime_types' );
-
-function tdsc_fix_svg() {
-echo '';
-}
-add_action( 'admin_head', 'tdsc_fix_svg' );
-
-
+/* -------------------------------------------------------------------------
+ * Plugins screen links
+ * ---------------------------------------------------------------------- */
 
 if ( ! class_exists( 'TDSC_Main' ) ) {
+
+    /**
+     * Adds the Settings and support links to the plugins list table.
+     */
     class TDSC_Main {
 
         private $plugin_basename;
 
         public function __construct() {
-            // Get the plugin basename.
-            $this->plugin_basename = plugin_basename( __FILE__ );
-            // Initialize the plugin when plugins are loaded.
+            $this->plugin_basename = plugin_basename( TDSC_SCROLL_PLUGIN_FILE );
             add_action( 'plugins_loaded', array( $this, 'init' ) );
         }
 
         public function init() {
-            // Add settings link on the plugins page.
             add_filter( 'plugin_action_links_' . $this->plugin_basename, array( $this, 'insert_view_logs_link' ) );
             add_filter( 'plugin_row_meta', array( $this, 'addon_plugin_links' ), 10, 2 );
         }
@@ -198,7 +215,7 @@ if ( ! class_exists( 'TDSC_Main' ) ) {
                 $links[] = __( '<a href="https://buymeacoffee.com/nityasaha" style="font-weight:bold;color:#00d300;font-size:15px;">Donate</a>', 'top-down-scroll' );
                 $links[] = __( 'Made with Love ❤️', 'top-down-scroll' );
             }
-    
+
             return $links;
         }
     }

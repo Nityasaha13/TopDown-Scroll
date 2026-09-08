@@ -9,6 +9,8 @@ Features:
 - Supports various screen sizes and devices
 - Set button position left/right
 - Upload your custom icon
-- Set background color and icon size
+- Set background color, hover color and icon size
+- Set the corner radius, padding, border width and border color
+- Set the spacing from the bottom of the screen and from the side of the page
 
 ![Scroll Buttons](assets/images/admin-page.png) 

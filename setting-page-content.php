@@ -15,22 +15,22 @@ function tdsc_top_down_scroll_page_content() {
         return;
     }
 
-    $position    = get_option( 'tdsc_position', 'left' ) ?: 'left';
-    $top_icon    = get_option( 'tdsc_top_button_icon_url' );
-    $down_icon   = get_option( 'tdsc_down_button_icon_url' );
-    $icon_size   = get_option( 'tdsc_icon_size' );
-    $bg_color    = get_option( 'tdsc_background_color', '#046bd2' ) ?: '#046bd2';
-    $hover_color = get_option( 'tdsc_hover_color', '#046bd2' ) ?: '#046bd2';
-    $border_radius = get_option( 'tdsc_border_radius', '0' ) ?: '0';
-    $button_padding = get_option( 'tdsc_button_padding', '8' ) ?: '8';
-    $bottom_spacing = get_option( 'tdsc_bottom_spacing', '20' );
-    $side_wall_spacing = get_option( 'tdsc_side_wall_spacing', '20' );
-    if ( '' === $bottom_spacing ) {
-        $bottom_spacing = '20';
-    }
-    if ( '' === $side_wall_spacing ) {
-        $side_wall_spacing = '20';
-    }
+    $position  = tdsc_sanitize_radio( get_option( 'tdsc_position', 'left' ) );
+    $top_icon  = get_option( 'tdsc_top_button_icon_url' );
+    $down_icon = get_option( 'tdsc_down_button_icon_url' );
+
+    // Read through the shared getters so the form shows exactly what the
+    // front end renders, defaults included.
+    $icon_size         = tdsc_get_size_option( 'tdsc_icon_size' );
+    $border_radius     = tdsc_get_size_option( 'tdsc_border_radius' );
+    $border_width      = tdsc_get_size_option( 'tdsc_border_width' );
+    $button_padding    = tdsc_get_size_option( 'tdsc_button_padding' );
+    $bottom_spacing    = tdsc_get_size_option( 'tdsc_bottom_spacing' );
+    $side_wall_spacing = tdsc_get_size_option( 'tdsc_side_wall_spacing' );
+
+    $bg_color     = tdsc_get_color_option( 'tdsc_background_color' );
+    $hover_color  = tdsc_get_color_option( 'tdsc_hover_color' );
+    $border_color = tdsc_get_color_option( 'tdsc_border_color' );
 
     // options.php redirects back with settings-updated=true, but only the core
     // options-*.php screens turn that into a notice, so add it here.
@@ -113,11 +113,24 @@ function tdsc_top_down_scroll_page_content() {
                     <div class="tdsc-field">
                         <div class="tdsc-field__label">
                             <label for="set-border-radius"><?php esc_html_e( 'Border Radius', 'top-down-scroll' ); ?></label>
-                            <p class="tdsc-field__hint"><?php esc_html_e( 'Default is 0px.', 'top-down-scroll' ); ?></p>
+                            <p class="tdsc-field__hint"><?php esc_html_e( 'Rounds the corners of both buttons. Default is 3px.', 'top-down-scroll' ); ?></p>
                         </div>
                         <div class="tdsc-field__control">
                             <span class="tdsc-number">
-                                <input type="number" name="tdsc_border_radius" id="set-border-radius" class="tdsc-input" min="0" step="1" placeholder="20" value="<?php echo esc_attr( $border_radius ); ?>">
+                                <input type="number" name="tdsc_border_radius" id="set-border-radius" class="tdsc-input" min="0" step="1" placeholder="3" value="<?php echo esc_attr( $border_radius ); ?>">
+                                <span class="tdsc-suffix"><?php esc_html_e( 'px', 'top-down-scroll' ); ?></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="tdsc-field">
+                        <div class="tdsc-field__label">
+                            <label for="set-border-width"><?php esc_html_e( 'Border Width', 'top-down-scroll' ); ?></label>
+                            <p class="tdsc-field__hint"><?php esc_html_e( 'Set to 0 for no border. Default is 0px.', 'top-down-scroll' ); ?></p>
+                        </div>
+                        <div class="tdsc-field__control">
+                            <span class="tdsc-number">
+                                <input type="number" name="tdsc_border_width" id="set-border-width" class="tdsc-input" min="0" step="1" placeholder="0" value="<?php echo esc_attr( $border_width ); ?>">
                                 <span class="tdsc-suffix"><?php esc_html_e( 'px', 'top-down-scroll' ); ?></span>
                             </span>
                         </div>
@@ -230,7 +243,7 @@ function tdsc_top_down_scroll_page_content() {
                     <div class="tdsc-field">
                         <div class="tdsc-field__label">
                             <span class="tdsc-field__title"><?php esc_html_e( 'Button color', 'top-down-scroll' ); ?></span>
-                            <p class="tdsc-field__hint"><?php esc_html_e( 'Background of the buttons, and the color they change to on hover. Default: #046bd2', 'top-down-scroll' ); ?></p>
+                            <p class="tdsc-field__hint"><?php esc_html_e( 'Background of the buttons, the color they change to on hover, and the border color. The border only shows when Border Width is above 0.', 'top-down-scroll' ); ?></p>
                         </div>
                         <div class="tdsc-field__control">
                             <div class="customColorInput tdsc-colors">
@@ -240,7 +253,7 @@ function tdsc_top_down_scroll_page_content() {
                                     <div class="tdsc-color__field">
                                         <label for="backgroundColorSelection" class="screen-reader-text"><?php esc_html_e( 'Pick a background color', 'top-down-scroll' ); ?></label>
                                         <input type="color" id="backgroundColorSelection" class="customColorInput__select-input" value="<?php echo esc_attr( $bg_color ); ?>">
-                                        <input type="text" id="backgroundColorPreview" name="tdsc_background_color" class="customColorInput__text-input jsColorValue" value="<?php echo esc_attr( $bg_color ); ?>">
+                                        <input type="text" id="backgroundColorPreview" name="tdsc_background_color" class="customColorInput__text-input jsColorValue" maxlength="7" pattern="#([A-Fa-f0-9]{3}){1,2}" value="<?php echo esc_attr( $bg_color ); ?>">
                                     </div>
                                 </div>
 
@@ -249,7 +262,16 @@ function tdsc_top_down_scroll_page_content() {
                                     <div class="tdsc-color__field">
                                         <label for="hoverColorSelection" class="screen-reader-text"><?php esc_html_e( 'Pick a hover color', 'top-down-scroll' ); ?></label>
                                         <input type="color" id="hoverColorSelection" class="customColorInput__select-input" value="<?php echo esc_attr( $hover_color ); ?>">
-                                        <input type="text" id="hoverColorPreview" name="tdsc_hover_color" class="customColorInput__text-input jsColorValue" value="<?php echo esc_attr( $hover_color ); ?>">
+                                        <input type="text" id="hoverColorPreview" name="tdsc_hover_color" class="customColorInput__text-input jsColorValue" maxlength="7" pattern="#([A-Fa-f0-9]{3}){1,2}" value="<?php echo esc_attr( $hover_color ); ?>">
+                                    </div>
+                                </div>
+
+                                <div class="tdsc-color">
+                                    <label class="tdsc-color__label" for="borderColorPreview"><?php esc_html_e( 'Border', 'top-down-scroll' ); ?></label>
+                                    <div class="tdsc-color__field">
+                                        <label for="borderColorSelection" class="screen-reader-text"><?php esc_html_e( 'Pick a border color', 'top-down-scroll' ); ?></label>
+                                        <input type="color" id="borderColorSelection" class="customColorInput__select-input" value="<?php echo esc_attr( $border_color ); ?>">
+                                        <input type="text" id="borderColorPreview" name="tdsc_border_color" class="customColorInput__text-input jsColorValue" maxlength="7" pattern="#([A-Fa-f0-9]{3}){1,2}" value="<?php echo esc_attr( $border_color ); ?>">
                                     </div>
                                 </div>
 

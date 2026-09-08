@@ -1,30 +1,53 @@
-document.addEventListener("DOMContentLoaded", function() {
-    
-    const backgroundColorPreviewInput = document.getElementById("backgroundColorPreview");
-    const backgroundColorSelectionInput = document.getElementById("backgroundColorSelection");
+document.addEventListener("DOMContentLoaded", function () {
 
-    // Get the elements FOR HOVER COLOR PICKER
-    const hoverColorPreviewInput = document.getElementById("hoverColorPreview");
-    const hoverColorSelectionInput = document.getElementById("hoverColorSelection");
+    var HEX = /^#([A-Fa-f0-9]{3}){1,2}$/;
 
-    // Function to update preview body color input and store value in localStorage
-    function updateColor() {
-        const colorValue = this.value;
-        if (this === backgroundColorSelectionInput) {
-            backgroundColorPreviewInput.value = colorValue;
-        } else if (this === backgroundColorPreviewInput) {
-            backgroundColorSelectionInput.value = colorValue;
-        } else if (this === hoverColorSelectionInput) {
-            hoverColorPreviewInput.value = colorValue;
-        } else if (this === hoverColorPreviewInput) {
-            hoverColorSelectionInput.value = colorValue;
+    /**
+     * <input type="color"> only accepts the 6-digit form, so #abc has to be
+     * expanded before it is assigned or the swatch silently falls back to black.
+     */
+    function toSixDigit(hex) {
+        var short = /^#([A-Fa-f0-9]{3})$/.exec(hex);
+
+        if (!short) {
+            return hex;
         }
-        localStorage.setItem(this.id, colorValue);
+
+        return "#" + short[1].replace(/./g, function (character) {
+            return character + character;
+        });
     }
 
-    // Event listener for input event on color inputs
-    backgroundColorSelectionInput.addEventListener("input", updateColor);
-    backgroundColorPreviewInput.addEventListener("input", updateColor);
-    hoverColorSelectionInput.addEventListener("input", updateColor);
-    hoverColorPreviewInput.addEventListener("input", updateColor);
+    /*
+     * Each colour setting is a pair inside one .tdsc-color__field: a native
+     * swatch, and the text input that actually gets submitted. Pairing them by
+     * container rather than by id means new colour settings need no JS changes.
+     */
+    var fields = document.querySelectorAll(".tdsc-color__field");
+
+    Array.prototype.forEach.call(fields, function (field) {
+
+        var swatch = field.querySelector(".customColorInput__select-input");
+        var text = field.querySelector(".customColorInput__text-input");
+
+        if (!swatch || !text) {
+            return;
+        }
+
+        // Saved values may be in the short form; line the swatch up on load.
+        if (HEX.test(text.value)) {
+            swatch.value = toSixDigit(text.value);
+        }
+
+        swatch.addEventListener("input", function () {
+            text.value = swatch.value;
+        });
+
+        text.addEventListener("input", function () {
+            // Only mirror a complete value, so typing "#0" does not reset the swatch.
+            if (HEX.test(text.value)) {
+                swatch.value = toSixDigit(text.value);
+            }
+        });
+    });
 });

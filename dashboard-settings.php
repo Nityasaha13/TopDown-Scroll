@@ -1,108 +1,117 @@
 <?php
+/**
+ * Settings registration, sanitizing and the front-end output hooks.
+ *
+ * @package top-down-scroll
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// Register setting and sanitize
+
+/* -------------------------------------------------------------------------
+ * Settings registration
+ * ---------------------------------------------------------------------- */
+
+add_action( 'admin_init', 'tdsc_scroll_register_settings' );
+
+/**
+ * Register every option in the tdsc_scroll_options group.
+ *
+ * The settings screen posts to options.php, so WordPress writes these itself and
+ * runs each sanitize callback below.
+ */
 function tdsc_scroll_register_settings() {
-    register_setting('tdsc_scroll_options', 'tdsc_enable_top', 'tdsc_sanitize_checkbox');
-    register_setting('tdsc_scroll_options', 'tdsc_enable_down', 'tdsc_sanitize_checkbox');
-    register_setting('tdsc_scroll_options', 'tdsc_position', 'tdsc_sanitize_radio');
-    register_setting('tdsc_scroll_options', 'tdsc_top_button_icon_url', 'esc_url_raw');
-    register_setting('tdsc_scroll_options', 'tdsc_down_button_icon_url', 'esc_url_raw');
-    register_setting('tdsc_scroll_options', 'tdsc_icon_size', 'tdsc_sanitize_size');
-    register_setting('tdsc_scroll_options', 'tdsc_background_color', 'sanitize_hex_color');
-    register_setting('tdsc_scroll_options', 'tdsc_hover_color', 'sanitize_hex_color');
-    register_setting('tdsc_scroll_options', 'tdsc_border_radius', 'tdsc_sanitize_size');
-    register_setting('tdsc_scroll_options', 'tdsc_button_padding', 'tdsc_sanitize_size');
-    register_setting('tdsc_scroll_options', 'tdsc_bottom_spacing', 'tdsc_sanitize_size');
-    register_setting('tdsc_scroll_options', 'tdsc_side_wall_spacing', 'tdsc_sanitize_size');
-}
-add_action('admin_init', 'tdsc_scroll_register_settings');
 
-
-// Sanitize checkbox
-function tdsc_sanitize_checkbox($input) {
-    return ($input === 'on') ? 'on' : 'off';
+    register_setting( 'tdsc_scroll_options', 'tdsc_enable_top', 'tdsc_sanitize_checkbox' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_enable_down', 'tdsc_sanitize_checkbox' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_position', 'tdsc_sanitize_radio' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_top_button_icon_url', 'esc_url_raw' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_down_button_icon_url', 'esc_url_raw' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_icon_size', 'tdsc_sanitize_size' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_background_color', 'tdsc_sanitize_color' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_hover_color', 'tdsc_sanitize_color' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_border_radius', 'tdsc_sanitize_size' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_border_width', 'tdsc_sanitize_size' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_border_color', 'tdsc_sanitize_color' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_button_padding', 'tdsc_sanitize_size' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_bottom_spacing', 'tdsc_sanitize_size' );
+    register_setting( 'tdsc_scroll_options', 'tdsc_side_wall_spacing', 'tdsc_sanitize_size' );
 }
 
-// Sanitize radio
-function tdsc_sanitize_radio($input) {
-    $valid = array('left', 'right');
-    return in_array($input, $valid) ? $input : 'left'; // Default to 'left' if invalid
+
+/* -------------------------------------------------------------------------
+ * Sanitizing
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Sanitize a checkbox.
+ *
+ * An unchecked box is not posted at all, so options.php hands this null.
+ *
+ * @param mixed $input Posted value.
+ * @return string 'on' or 'off'.
+ */
+function tdsc_sanitize_checkbox( $input ) {
+    return ( 'on' === $input ) ? 'on' : 'off';
 }
 
-// Sanitize icon size. An empty value is kept as-is so the 20px default applies.
-function tdsc_sanitize_size($input) {
-    $input = trim((string) $input);
-    if ('' === $input) {
+/**
+ * Sanitize the position radio.
+ *
+ * @param mixed $input Posted value.
+ * @return string 'left' or 'right'.
+ */
+function tdsc_sanitize_radio( $input ) {
+    $valid = array( 'left', 'right' );
+    return in_array( $input, $valid, true ) ? $input : 'left';
+}
+
+/**
+ * Sanitize a pixel value.
+ *
+ * An empty value is stored as-is so the option's default applies. There is no
+ * upper clamp, so existing custom sizes are preserved.
+ *
+ * @param mixed $input Posted value.
+ * @return string
+ */
+function tdsc_sanitize_size( $input ) {
+
+    $input = trim( (string) $input );
+
+    if ( '' === $input ) {
         return '';
     }
-    return (string) absint($input); // No upper clamp, so existing custom sizes are preserved.
+
+    return (string) absint( $input );
 }
 
-// Function to handle saving of settings
-function tdsc_scroll_save_settings() {
-    if ( ! isset( $_POST['save_plugin_settings'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'save_tdsc_scroll_settings' ) ) {
-        return;
-    }
-    
+/**
+ * Sanitize a hex colour.
+ *
+ * Wraps sanitize_hex_color() so a missing value cannot reach it as null, and so
+ * an invalid one is stored as '' rather than null - which lets
+ * tdsc_get_color_option() fall back to the default.
+ *
+ * @param mixed $input Posted value.
+ * @return string
+ */
+function tdsc_sanitize_color( $input ) {
 
-    update_option('tdsc_enable_top', isset($_POST['tdsc_enable_top']) ? 'on' : 'off');
-    update_option('tdsc_enable_down', isset($_POST['tdsc_enable_down']) ? 'on' : 'off');
-    update_option( 'tdsc_position', tdsc_sanitize_radio( sanitize_text_field( wp_unslash( $_POST['tdsc_position'] ) ) ) );
-    update_option('tdsc_icon_size', sanitize_text_field($_POST['tdsc_icon_size']));
+    $color = sanitize_hex_color( trim( (string) $input ) );
 
-    if (isset($_POST['tdsc_background_color'])) {
-        update_option('tdsc_ackground_color', sanitize_hex_color($_POST['tdsc_background_color']));
-    }
-    if (isset($_POST['tdsc_hover_color'])) {
-        update_option('tdsc_hover_color', sanitize_hex_color($_POST['tdsc_hover_color']));
-    }
-
-    if (isset($_POST['tdsc_border_radius'])) {
-        update_option('tdsc_border_radius', sanitize_text_field($_POST['tdsc_border_radius']));
-    }
-
-    if (isset($_POST['tdsc_button_padding'])) {
-        update_option('tdsc_button_padding', sanitize_text_field($_POST['tdsc_button_padding']));
-    }
-
-    if (isset($_POST['tdsc_bottom_spacing'])) {
-        update_option('tdsc_bottom_spacing', sanitize_text_field($_POST['tdsc_bottom_spacing']));
-    }
-
-    if (isset($_POST['tdsc_side_wall_spacing'])) {
-        update_option('tdsc_side_wall_spacing', sanitize_text_field($_POST['tdsc_side_wall_spacing']));
-    }
-
-    if (!empty($_POST['tdsc_top_button_icon_url'])) {
-        update_option('tdsc_top_button_icon_url', esc_url_raw($_POST['tdsc_top_button_icon_url']));
-    } else {
-        delete_option('tdsc_top_button_icon_url');
-    }
-
-    if (!empty($_POST['tdsc_down_button_icon_url'])) {
-        update_option('tdsc_down_button_icon_url', esc_url_raw($_POST['tdsc_down_button_icon_url']));
-    } else {
-        delete_option('tdsc_down_button_icon_url');
-    }
-
-    // Redirect back to the settings page after saving
-    wp_redirect(add_query_arg('page', 'tdsc_scroll_options', admin_url('options-general.php')));
-    exit;
-}
-add_action('admin_post_save_plugin_settings', 'tdsc_scroll_save_settings');
-
-// Hook the scroll-to-top button function to wp_footer action
-if (sanitize_text_field(get_option('tdsc_enable_top')) === "on") {
-    add_action('wp_footer', 'tdsc_scroll_to_top_button');
-}
-
-// Hook the scroll-to-down button function to wp_footer action
-if (sanitize_text_field(get_option('tdsc_enable_down')) === "on") {
-    add_action('wp_footer', 'tdsc_scroll_to_down_button');
+    return $color ? $color : '';
 }
 
 
+/* -------------------------------------------------------------------------
+ * Front-end output
+ * ---------------------------------------------------------------------- */
 
+if ( 'on' === get_option( 'tdsc_enable_top' ) ) {
+    add_action( 'wp_footer', 'tdsc_scroll_to_top_button' );
+}
 
+if ( 'on' === get_option( 'tdsc_enable_down' ) ) {
+    add_action( 'wp_footer', 'tdsc_scroll_to_down_button' );
+}

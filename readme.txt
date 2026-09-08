@@ -1,4 +1,4 @@
-=== Top-Down Scroll – Scroll to Top Button ===
+=== Top-Down Scroll – Customizable Scroll to Top Button ===
 Contributors: nityasaha
 Donate link: https://buymeacoffee.com/nityasaha
 Tags: scroll to top, back to top, go to top, scroll to top button, smooth scroll
@@ -28,6 +28,8 @@ Everything is configured on one screen under **Appearance &rarr; Top-Down Scroll
 * **Match your brand colors** &mdash; choose a background color and a separate hover color with the built-in color picker.
 * **Left or right** &mdash; place the buttons on whichever side suits your layout.
 * **Adjustable icon size** &mdash; set the size in pixels to suit your design.
+* **Shape the button** &mdash; set the corner radius, inner padding, and an optional border with its own width and color.
+* **Control the spacing** &mdash; choose how far the buttons sit from the bottom of the screen and from the side of the page.
 * **Works with any theme** &mdash; the buttons are output through `wp_footer`, so block themes, classic themes and page builders are all supported.
 * **Translation ready** &mdash; every piece of interface text can be translated.
 
@@ -82,6 +84,14 @@ Yes. The **Position** setting places both buttons on either the left or the righ
 
 Set a value in the **Icon size** field. The default is 20px, and 18&ndash;25px works best when both buttons are enabled at once.
 
+= Can I round the corners or add a border? =
+
+Yes. **Border Radius** rounds the corners of both buttons, and **Border Width** adds a border once it is set above 0. The border color is picked in the **Colors** section, next to the background and hover colors.
+
+= Can I change how far the buttons sit from the edge of the screen? =
+
+Yes. **Bottom Spacing** controls the gap from the bottom of the screen and **Side Wall Spacing** the gap from the left or right edge. When both buttons are enabled the top button is positioned automatically so it always clears the bottom one, whatever padding, icon size and border you have chosen.
+
 = When does the scroll to top button appear? =
 
 The top button appears once the visitor has scrolled past roughly 10% of the page, so it stays out of the way at the very top. The bottom button hides once they are within the last 10% of the page.
@@ -106,7 +116,13 @@ Yes. Both buttons use native smooth scrolling, so the page glides to the top or 
 == Changelog ==
 
 = 1.3.7 =
-* New settings for button padding and border radius
+* New settings for button padding, border radius, bottom spacing and side wall spacing
+* New settings for button border width and border color
+* Border radius, padding and the border now apply to the scroll to bottom button as well, not only the scroll to top button
+* Fixed the top button overlapping the bottom button when a custom padding, icon size or bottom spacing was used
+* The media library is no longer loaded on the front end, or on admin screens that do not need it
+* SVG uploads are now left alone when another plugin already allows them, and are limited to administrators
+* Fixed SVG uploads being rejected on hosts where the server reports the file as plain text
 
 = 1.3.6 =
 * Redesigned the settings screen: card-based layout, toggle switches, a segmented position control and clearer icon previews
@@ -137,4 +153,4 @@ Yes. Both buttons use native smooth scrolling, so the page glides to the top or 
 == Upgrade Notice ==
 
 = 1.3.7 =
-New settings added.
+New border and spacing settings. Existing settings are preserved.
